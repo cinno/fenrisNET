@@ -21,6 +21,11 @@ If you have any problems with cross compiling in context of this software or the
 8. wine msiexec -i python-2.7.8.msi
 9. wine pywin32-218.win32-py2.7.exe
 
-
 Thanks to milkator and his awesome blog post about cross compiling in python!
 https://milkator.wordpress.com/2014/07/19/windows-executable-from-python-developing-in-ubuntu/
+
+III. To run the control panel you need a webserver with PHP functionality.
+1. Run the setup script with -p option
+2. You may have to set "AllowOverride All" inside the /etc/apache2/apache2.conf to enable the htaccess file.
+3. Then you only have to copy all files and folders from the panel folder inside your webservers www folder.
+4. Access the panel by calling the URL: http://YOURWEBSERVER/orders.php with standard password "password".
