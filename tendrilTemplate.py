@@ -23,7 +23,7 @@
 import urllib2
 
 
-candc = "192.168.1.56"
+candc = "[DUMMYCANDC]"
 
 while(True):
     # get tendril orders
