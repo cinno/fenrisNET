@@ -21,14 +21,97 @@
 
 
 import os
+import sys
 from tools.tools import tools
 
+
 myTool = tools()
+usageString = "Usage: " + sys.argv[0] + myTool.blue  + " <options>" + myTool.stop
+
+def completeMessage():
+	print myTool.green + "[+] " + myTool.stop + "Setup complete."
+	print "*** Remember: \"A hacker should only be limited by his imagination and not by his tools.\"\n"	
+
 # set all important chmods
-try:
-	os.system("chmod a+x run.py")
-except:
-	print myTool.fail + "[-] " + myTool.stop + " Something went wrong with run.py."
+def chmods():
+	try:
+		os.system("chmod a+x run.py")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with run.py."
+	
+	print myTool.green + "[+] " + myTool.stop + "All needed chmods set."
 
-print myTool.green + "[+] " + myTool.stop + "Setup complete."
+def environment():
+	try:
+		os.system("wget https://www.python.org/ftp/python/2.7.8/python-2.7.8.msi")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with downloading the python msi installer."
+	try:
+		os.system("wget http://downloads.sourceforge.net/project/pywin32/pywin32/Build%20218/pywin32-218.win32-py2.7.exe")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with downloading the pywin32 installer."
+	try:
+		os.system("git clone https://github.com/pyinstaller/pyinstaller")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with cloning pyinstaller."
+	try:
+		os.system("git clone https://github.com/htgoebel/virtual-wine.git")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with cloning virtual-wine."
+	try:
+		os.system("apt-get install scons")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with installing scons."	
+	print myTool.green + "[+] " + myTool.stop + "All needed third party downloads complete."
+	print myTool.green + "[+] " + myTool.stop + "Installing virtual-wine (You may choose windows 7 at the end if asked.)..."
+	try:
+		os.system("./virtual-wine/vwine-setup venv_wine")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with installing virtual-wine."
+	try:
+		os.system(". venv_wine/bin/activate")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with activating virtual-wine."	
+	print myTool.green + "[+] " + myTool.stop + "Installing virtual-wine complete."
+	try:
+		os.system("wine msiexec -i python-2.7.8.msi")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with installing python 2.7.8 for Windows."
+	try:
+		os.system("wine pywin32-218.win32-py2.7.exe")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with installing pywin32 for Windows."
+	print myTool.green + "[+] " + myTool.stop + "Installation of third party downloads complete."
+	try:
+		os.system("rm python-2.7.8.msi")
+		os.system("rm pywin32-218.win32-py2.7.exe")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Error while cleanup."
 
+
+if len(sys.argv) == 2:
+	if "-h" in sys.argv or "--help" in sys.argv:
+		print usageString
+		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\tDisplays this help menu."
+		print myTool.blue + "[-c|--complete]" + myTool.stop + "\t\tPerform complete setup."
+		print myTool.blue + "[-p|--permissions]" + myTool.stop + "\tSet all necessary permissions (chmod)."
+		print myTool.blue + "[-e|--environment]" + myTool.stop + "\tInstall needed software to compile windows executables."
+		print ""
+
+	if "-p" in sys.argv or "--permissions" in sys.argv:
+		chmods()
+		completeMessage()
+		sys.exit(0)
+		
+	if "-e" in sys.argv or "--environment" in sys.argv:
+		environment()
+		completeMessage()
+		sys.exit(0)
+		
+	if "-c" in sys.argv or "--complete" in sys.argv:
+		chmods()
+		environment()
+		completeMessage()
+		sys.exit(0)
+else:
+	print myTool.fail + "[-]" + myTool.stop + "\tWorng number of input parameters."
