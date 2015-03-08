@@ -1,0 +1,26 @@
+This program (tendrilNET) was developed and tested under Ubuntu 14.04 LTS.
+
+I. To run this program with full functionality you need some third party programs:
+[x] pyinstaller 2.1
+[x] python-2.7.8.msi
+[x] pywin32-218.win32-py2.7.exe
+[x] wine >= 1.6.2
+[x] virtual-wine 0.1
+
+II. Most of this programs you can automatically install using the setup script in this folder (setup.py)
+python setup.py -h
+
+If you have any problems with cross compiling in context of this software or the setup script does not work, perform the following commands:
+1. Download python-2.7.8.msi and pywin32-218.win32-py27.exe
+2. install wine
+3. git clone https://github.com/pyinstaller/pyinstaller
+4. git clone https://github.com/htgoebel/virtual-wine.git
+5. apt-get install scons
+6. ./virtual-wine/vwine-setup venv_wine (choose windows 7 at the end)
+7. . venv_wine/bin/activate
+8. wine msiexec -i python-2.7.8.msi
+9. wine pywin32-218.win32-py2.7.exe
+
+
+Thanks to milkator and his awesome blog post about cross compiling in python!
+https://milkator.wordpress.com/2014/07/19/windows-executable-from-python-developing-in-ubuntu/
