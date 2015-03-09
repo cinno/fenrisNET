@@ -43,13 +43,14 @@ else:
 	# help menu
 	if "-h" in sys.argv or "--help" in sys.argv:
 		print usageString
-		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\tDisplays this help menu."
 		print myTool.blue + "[-ct|--create-tendril]" + myTool.stop + "\tCreate a new tendril."
+		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\tDisplays this help menu."		
+		print myTool.blue + "[-s|--setup]" + myTool.stop + "\t\tPerform setup."
 		print ""
 		sys.exit()
 
 	if "-ct" in sys.argv or "--create-tendril" in sys.argv:
-		candc = raw_input("# C&C-Server: ")
+		candc = raw_input("# C&C-server: ")
 		# update tendril.py
 		f = open("tendrilTemplate.py", "r")
 		newFileContent = ""
@@ -67,3 +68,19 @@ else:
 		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F tendril.py")
 		print myTool.green + "[+]" + myTool.stop + " tendril.exe saved into dist/ folder."
 		sys.exit()
+	if "-s" in sys.argv or "--setup" in sys.argv:
+		setupParameter = ""
+		while(setupParameter != "p" and setupParameter != "e" and setupParameter != "c"):
+			setupParameter = raw_input("# setup variant(permissions(p), environment(e), complete(c)): ")
+			# permissions
+			if setupParameter == "p":
+				os.system("python setup.py -p")
+			# environment
+			if setupParameter == "e":
+				os.system("python setup.py -e")
+			# complete
+			if setupParameter == "c":
+				os.system("python setup.py -c")
+			# wrong input
+			if setupParameter != "p" and setupParameter != "e" and setupParameter != "c":
+				print myTool.fail + "[-]" + myTool.stop + "Wrong input! (choose one of: p, e, c)"
