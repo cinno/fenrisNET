@@ -129,9 +129,26 @@ elseif($_GET['p'] == "password") {
 }
 else {
 	// login form
+	print "<!DOCTYPE html>";
+	print "<html>";
+	print "<head>";
+	print "<title>tendrilNET Login Panel</title>";
+	print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
+	print "</head>";
+	print "<body id=\"bodyLogin\">";
+
+	print "<div id=\"headlineLogin\"><img width=\"50%\" src=\"images/logo.png\"></div>";
+	print "<div id=\"loginForm\">";
 	print "<form method=\"get\">";
-	print "<input type=\"password\" name=\"p\"><br>";
-	print "<input type=\"submit\" value=\"Submit\">";
+	print "<table border=\"0\" align=\"center\">";
+	print "<tr><td colspan=\"2\"><div id=\"formHeadlineLogin\"><b>Login</b></div></td></tr>";
+	print "<tr><td><input id=\"input\" type=\"password\" name=\"p\" placeholder=\"Password\"></td>";
+	print "<td><input id=\"loginButton\" type=\"submit\" value=\"Login\"></td></tr>";
+	print "</table>";
 	print "</form>";
+	print "</div>";
+
+	print "</body>";
+	print "</html>";
 }
 ?>
