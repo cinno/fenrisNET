@@ -137,16 +137,18 @@ else {
 	print "</head>";
 	print "<body id=\"bodyLogin\">";
 
-	print "<div id=\"headlineLogin\"><img width=\"50%\" src=\"images/logo.png\"></div>";
+	print "<table border=\"0\" id=\"loginTable\"><tr><td>";
+	print "<img id=\"headlineLogin\" src=\"images/logo.png\">";
+	print "</td></tr><tr><td>";
 	print "<div id=\"loginForm\">";
 	print "<form method=\"get\">";
 	print "<table border=\"0\" align=\"center\">";
-	print "<tr><td colspan=\"2\"><div id=\"formHeadlineLogin\"><b>Login</b></div></td></tr>";
 	print "<tr><td><input id=\"input\" type=\"password\" name=\"p\" placeholder=\"Password\"></td>";
 	print "<td><input id=\"loginButton\" type=\"submit\" value=\"Login\"></td></tr>";
 	print "</table>";
 	print "</form>";
 	print "</div>";
+	print "</td></tr></table>";
 
 	print "</body>";
 	print "</html>";

@@ -1,15 +1,10 @@
 #bodyLogin {
 	background-image: url("images/texture.jpg");
-	overflow-x: hidden;
 }
 
 #loginForm {
-	position: absolute;
-	left: 40%;
-	top: 47%;
 	text-align: center;
-	width: 300px;
-	margin: 0 auto;
+	marging: 0 auto;
 	background: #d3d3d3;
 	border: 1px solid #fff;
 	border-radius: 5px;
@@ -62,11 +57,13 @@
         border-radius: 5px;
 }
 
-#formHeadlineLogin {
-	font-family: Arial, sans-serif;
+#headlineLogin {
+	width: 50%;
 }
 
-#headlineLogin {
-	position: relative;
-        left: 25%;
+#loginTable {
+	position: absolute;
+        left: 40%;
+        top: 40%;
+	width: 25%;
 }
