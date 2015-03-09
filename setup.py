@@ -45,7 +45,11 @@ def chmods():
 	try:
 		os.system("chmod 777 panel/data/bots")
 	except:
-		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with bots."		
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with bots."
+	try:
+		os.system("chmod 777 panel/data/password")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with password."		
 	
 	print myTool.green + "[+] " + myTool.stop + "All needed chmods set."
 
