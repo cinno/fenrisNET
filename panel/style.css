@@ -67,3 +67,18 @@
         top: 40%;
 	width: 25%;
 }
+
+#tablePanel {
+	text-align: left;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#trMain {
+	background: #aaaaaa;
+}
+
+#trAlt {
+	background: #cccccc;
+}
