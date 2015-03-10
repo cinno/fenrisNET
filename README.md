@@ -1,4 +1,4 @@
-<h1>tendrilNET</h1>
+<h1>fenrisNET</h1>
 <i>Version 0.1-alpha</i>
 <hr>
 <h2>About:</h2>
