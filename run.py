@@ -3,7 +3,7 @@
 ########################################################################
 # Copyright 2015 Daniel Haake
 #
-# This file is part of tendrilNET
+# This file is part of fenrisNET
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,30 +43,30 @@ else:
 	# help menu
 	if "-h" in sys.argv or "--help" in sys.argv:
 		print usageString
-		print myTool.blue + "[-ct|--create-tendril]" + myTool.stop + "\tCreate a new tendril."
+		print myTool.blue + "[-cf|--create-fenris]" + myTool.stop + "\tCreate a wild fenris."
 		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\tDisplays this help menu."		
 		print myTool.blue + "[-s|--setup]" + myTool.stop + "\t\tPerform setup."
 		print ""
 		sys.exit()
 
-	if "-ct" in sys.argv or "--create-tendril" in sys.argv:
+	if "-cf" in sys.argv or "--create-fenris" in sys.argv:
 		candc = raw_input("# C&C-server: ")
-		# update tendril.py
-		f = open("tendrilTemplate.py", "r")
+		# update fenris.py
+		f = open("fenrisTemplate.py", "r")
 		newFileContent = ""
 		for line in f.readlines():
 			if "[DUMMYCANDC]" in line:
 				line = "candc = \"" + candc + "\"\n"
 			newFileContent += line
 		f.close()
-		f = open("tendril.py", "w")
+		f = open("fenris.py", "w")
 		f.write(newFileContent)
 		f.close()
 		# cross compile...
 		virtualEnvWine = raw_input("# Virtual wine environment root-path: ")
 		pyinstaller = raw_input("# pyinstaller.py root-path: ")
-		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F tendril.py")
-		print myTool.green + "[+]" + myTool.stop + " tendril.exe saved into dist/ folder."
+		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F fenris.py")
+		print myTool.green + "[+]" + myTool.stop + " fenris.exe saved into dist/ folder."
 		sys.exit()
 	if "-s" in sys.argv or "--setup" in sys.argv:
 		setupParameter = ""

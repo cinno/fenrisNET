@@ -3,7 +3,7 @@
 ########################################################################
 # Copyright 2015 Daniel Haake
 #
-# This file is part of tendrilNET
+# This file is part of fenrisNET
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -258,7 +258,7 @@ else {
 	print "<!DOCTYPE html>";
 	print "<html>";
 	print "<head>";
-	print "<title>tendrilNET Login Panel</title>";
+	print "<title>fenrisNET Login Panel</title>";
 
 	print "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css\">";
         print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";

