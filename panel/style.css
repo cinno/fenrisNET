@@ -32,6 +32,9 @@
 	color: #414848;
 	border: 1px solid #fff;
         border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
+	-moz-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
+	box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
 }
 
 #loginButton {
@@ -55,6 +58,9 @@
         color: #414848;
         border: 1px solid #fff;
         border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
+        -moz-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
+        box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.20);
 }
 
 #headlineLogin {
@@ -81,4 +87,8 @@
 
 #trAlt {
 	background: #cccccc;
+}
+
+table {
+	border-spacing: 10px 0px;
 }
