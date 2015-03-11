@@ -81,14 +81,28 @@
 	margin-right: auto;
 }
 
-#trMain {
-	background: #aaaaaa;
-}
-
-#trAlt {
-	background: #cccccc;
-}
-
 table {
 	border-spacing: 10px 0px;
+}
+
+table.attackStatusTable {
+	width: 580px;
+	background-color: #999999;
+	border: 1px #000000 solid;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+td.attackStatusColumn {
+	border-bottom: 1px #6699CC dotted;
+	text-align: left;
+	font-family: Arial, sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	color: #404040;
+	background-color: #eeeeee;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 8px;
+	padding-right: 0px;
 }

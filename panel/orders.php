@@ -189,9 +189,9 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<div id=\"accordion\">";
 	print "<h3>Attack Status</h3>";
 	print "<div>";
-	print "<table border=\"0\">";
-	print "<tr id=\"trMain\"><td>Status:</td>";
-	print "<td align=\"center\">";
+	print "<table border=\"1\" class=\"attackStatusTable\" cellspacing=\"0\">";
+	print "<tr><td class=\"attackStatusColumn\" width=\"25%\">Status:</td>";
+	print "<td class=\"attackStatusColumn\">";
 	if ($order == "no") {
 		print "Not attacking.";
 	}
@@ -199,10 +199,10 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 		print "<div style=\"color: red;\">Attacking...</div>";
 	}
 	print "</td></tr>";
-	print "<tr id=\"trAlt\"><td>Target:</td>";
-	print "<td align=\"center\">".$target."</td></tr>";
-	print "<tr id=\"trMain\"><td>Bots Online:</td>";
-	print "<td align=\"center\">";
+	print "<tr><td class=\"attackStatusColumn\">Target:</td>";
+	print "<td class=\"attackStatusColumn\">".$target."</td></tr>";
+	print "<tr><td class=\"attackStatusColumn\">Bots Online:</td>";
+	print "<td class=\"attackStatusColumn\">";
 	$activeBots = fopen($botFile, "r");
         $content = fread($activeBots, filesize($botFile));
         fclose($activeBots);
