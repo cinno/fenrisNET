@@ -245,9 +245,12 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	$allBotsContent = explode("\n", $allBotsContent);
 
 	print "<tr><td class=\"attackStatusHead\">IP</td><td class=\"attackStatusHead\">System Name</td><td class=\"attackStatusHead\">Operating System</td><td class=\"attackStatusHead\">Architecture</td></tr>";
+	if(count($allBotsContent) == 1) {
+		print "<tr><td colspan=\"4\" class=\"attackStatusColumn\">No entries.</td></tr>";
+	}
 	for($i = 0; $i < count($allBotsContent)-1; $i++) {
 		$curBot = explode(" ", $allBotsContent[$i]);
-        	print "<tr><td class=\"attackStatusColumn\" width=\"25%\">".$curBot[0]."</td>";
+        	print "<tr><td class=\"attackStatusColumn\">".$curBot[0]."</td>";
         	print "<td class=\"attackStatusColumn\">";
 		print $curBot[3];
 		print "</td>";
