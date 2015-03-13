@@ -29,6 +29,7 @@ At first the botmaster creates a bot-executable for windows using the run.py scr
 <li>Create a new Windows executable (bot): ./run.py -cf</li>
 <li>Access the webinterface: Copy all files and folders from panel/ to your webservers www folder and access the panel by calling http://YOURWEBSERVER/orders.php</li>
 </ul>
+HINT: The standard password for the web interface is "password".
 <hr>
 <h2>License:</h2>
 <p>Copyright 2015 Daniel Haake</p>
