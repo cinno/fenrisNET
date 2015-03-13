@@ -82,7 +82,7 @@
 }
 
 table {
-	border-spacing: 10px 0px;
+	border-spacing: 10px 5px;
 }
 
 table.attackStatusTable {
@@ -118,3 +118,24 @@ td.attackStatusHead {
 	background: #b3b3b3;
 	border-radius: 5px;
 }
+
+.ui-tooltip {
+	font-size: 10px;
+}
+
+select {
+	width: 150px;
+        font-size: 14px;
+}
+
+#effect {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	width: 95%;
+	padding: 0.4em;
+	text-align: center;
+	background: #00B3FF;
+	border: 0px;
+	color: #ffffff;
+}
+
