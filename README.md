@@ -1,5 +1,5 @@
 <h1>fenrisNET</h1>
-<i>Version 0.1-alpha</i>
+<i>Version 1.0.0</i>
 <hr>
 <h2>About:</h2>
 This program is a simple <b>proof of concept (POC)</b> of how someone can easily implement a simple botnet with a <b>DDoS</b> feature. The botnet is implemented in the context of a research question and is for <b>EDUCATIONAL PURPOSE ONLY</b>. So the author does not take responsibility for any misuse and abuse. Thatswhy: Just test and use this software on systems you own or where you have the permission to execute these kind of software. 
@@ -26,7 +26,7 @@ At first the botmaster creates a bot-executable for windows using the run.py scr
 <hr>
 <h2>Usage Examples:</h2>
 <ul>
-<li>Create a new Windows executable (Bot): ./run.py -ct</li>
+<li>Create a new Windows executable (bot): ./run.py -cf</li>
 <li>Access the webinterface: Copy all files and folders from panel/ to your webservers www folder and access the panel by calling http://YOURWEBSERVER/orders.php</li>
 </ul>
 <hr>
