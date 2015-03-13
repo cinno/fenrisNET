@@ -43,9 +43,13 @@ def chmods():
 	except:
 		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with config."
 	try:
-		os.system("chmod 777 panel/data/bots")
+		os.system("chmod 777 panel/data/")
 	except:
-		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with bots."
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with data folder."
+	try:
+		os.system("chmod 777 panel/data/bots/")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with bots folder."		
 	try:
 		os.system("chmod 777 panel/data/password")
 	except:
