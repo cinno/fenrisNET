@@ -114,3 +114,7 @@ td.attackStatusHead {
         padding-right: 0px;
 }
 
+#logout {
+	background: #b3b3b3;
+	border-radius: 5px;
+}

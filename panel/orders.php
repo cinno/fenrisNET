@@ -108,7 +108,7 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<script>";
 	print "$(function() {";
 	print "$( \"#tabs\" ).tabs();";
-	print "$( \"#accordion\" ).accordion();";
+	print "$( \"#accordion\" ).accordion({collapsible: true});";
 	print "$( \"#attackorder\" ).selectmenu();";
 	print "function runEffect() {";
         print "options = { percent: 100 };";
@@ -251,11 +251,13 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
         print "</form>";
 
 	print "</div>";
+	print "</td></tr><tr><td>";
+	print "<div id=\"logout\" align=\"right\"><form method=\"get\">";
+        print "<input id=\"loginButton\" type=\"submit\" value=\"Logout\">";
+        print "</div></form>";
 	print "</td></tr></table>";
-
 	print "</body>";
 	print "</html>";
-
 }
 else {
 	// login form
