@@ -28,4 +28,4 @@ III. To run the control panel you need a webserver with PHP functionality.
 1. Run the setup script with -p option
 2. You may have to set "AllowOverride All" inside the /etc/apache2/apache2.conf to enable the htaccess file.
 3. Then you only have to copy all files and folders from the panel folder inside your webservers www folder.
-4. Access the panel by calling the URL: http://YOURWEBSERVER/orders.php with standard password "password".
+4. Access the panel by calling the URL: http://YOURWEBSERVER/orders.php (standard password: "password").
