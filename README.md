@@ -16,6 +16,7 @@ At first the botmaster creates a bot-executable for windows using the run.py scr
 <li>Virtual-Wine</li>
 <li>Webserver with PHP module and htaccess functionality activated</li>
 <li>Wine</li>
+<li>Zip</li>
 </ul>
 <hr>
 <h2>Installation:</h2>
@@ -26,7 +27,7 @@ At first the botmaster creates a bot-executable for windows using the run.py scr
 <hr>
 <h2>Usage Examples:</h2>
 <ul>
-<li>Create a new Windows executable (bot): ./run.py -cf</li>
+<li>Create a new Windows executable (bot): ./run.py -cf (to install the bot you need to execute the .bat file)</li>
 <li>Access the webinterface: Copy all files and folders from panel/ to your webservers www folder and access the panel by calling http://YOURWEBSERVER/orders.php</li>
 </ul>
 HINT: The standard password for the web interface is "password".
