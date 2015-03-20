@@ -1,5 +1,5 @@
 <h1>fenrisNET</h1>
-<i>Version 1.0.0</i>
+<i>Version 1.3.4</i>
 <hr>
 <h2>About:</h2>
 This program is a simple <b>proof of concept (POC)</b> of how someone can easily implement a simple botnet with a <b>DDoS</b> feature. The botnet is implemented in the context of a research question and is for <b>EDUCATIONAL PURPOSE ONLY</b>. So the author does not take responsibility for any misuse and abuse. Thatswhy: Just test and use this software on systems you own or where you have the permission to execute these kind of software. 
