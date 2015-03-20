@@ -30,10 +30,12 @@ from itertools import cycle, izip
 
 candc = "127.0.0.1"
 key = "gT8jUdw65h"
+
 # extract system information
 systemData = platform.uname()
 currentTime = time.time()
 timeFactor = 20
+
 
 while(True):
         # get fenris orders
