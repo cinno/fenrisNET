@@ -1,0 +1,68 @@
+#!/usr/bin/python
+
+########################################################################
+# Copyright 2015 Daniel Haake
+#
+# This file is part of fenrisNET
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+########################################################################
+
+
+import cgi
+
+
+arguments = cgi.FieldStorage()
+try:
+    venvPath = arguments["venvwine"].value
+except:
+    venvPath = ""
+try:
+    pyPath = arguments["pyinstaller"].value
+except:
+    pyPath = ""
+
+# HTTP header
+print "Content-Type: text/html"
+print ""
+
+print "<!DOCTYPE html>"
+print "<html>"
+
+# header
+print "<head>"
+print "<title>fenrisNET (environment configuration)</title>"
+print "</head>"
+
+print "<body>"
+print "<h1>Environment Configuration</h1>"
+
+if venvPath == "" or pyPath == "":
+    # environment form
+    print "<form method=\"GET\">"
+    print "<input type=\"text\" name=\"venvwine\" placeholder=\"virtual wine environment path\" size=\"30px\" value=\"" + venvPath + "\"><br />"
+    print "<input type=\"text\" name=\"pyinstaller\" placeholder=\"pyinstaller.py path\" size=\"30px\" value =\"" + pyPath + "\"><br />"
+    print "<p><input type=\"submit\">"
+    print "</form>"
+else:
+    print "Environment parameters saved.<br />"
+    # write config file
+    file = open("config", "w")
+    file.write(venvPath + "," + pyPath)
+    file.close()
+    print "<a href=\"index.html\">Menu</a>"
+
+print "</body>"
+
+print "</html>"

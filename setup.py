@@ -53,7 +53,23 @@ def chmods():
 	try:
 		os.system("chmod 777 panel/data/password")
 	except:
-		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with password."		
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with password."
+	try:
+		os.system("chmod 777 cgi-bin/")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with cgi-bin folder."
+	try:
+		os.system("chmod 777 cgi-bin/configuration.html")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with configuration.html."			
+	try:
+		os.system("chmod 777 cgi-bin/creation.html")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with creation.html."			
+	try:
+		os.system("chmod 777 cgi-bin/index.html")
+	except:
+		print myTool.fail + "[-] " + myTool.stop + " Something went wrong with index.html."			
 	
 	print myTool.green + "[+] " + myTool.stop + "All needed chmods set."
 
