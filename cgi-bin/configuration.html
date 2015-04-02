@@ -40,29 +40,88 @@ print ""
 print "<!DOCTYPE html>"
 print "<html>"
 
+# load already saved parameters
+savedVenv = ""
+savedPyPath = ""
+try:
+    f = open("config", "r")
+    configContent = f.readlines()[0].split(",")
+    try:
+        savedVenv = configContent[0]
+    except:
+        savedVenv = ""
+    try:
+        savedPyPath = configContent[1]
+    except:
+        savedPyPath = ""
+    f.close()
+except:
+    pass
+
 # header
 print "<head>"
 print "<title>fenrisNET (environment configuration)</title>"
+print "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css\">";
+print "<link rel=\"stylesheet\" type=\"text/css\" href=\"../panel/style.css\">";
+print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
+print "<script src=\"//code.jquery.com/ui/1.11.3/jquery-ui.js\"></script>";
+print "<script>"
+print "$(function() {"
+print "$( document ).tooltip({"
+print "track: true"
+print "});"
+print "function runEffect() {";
+print "options = { percent: 100 };";
+print "$( \"#effect\" ).show( \"drop\", options, 500, callback );";
+print "};";
+print "function callback() {";
+print "setTimeout(function() {";
+print "$( \"#effect:visible\" ).removeAttr( \"style\" ).fadeOut();";
+print "}, 3000 );";
+print "};";
+print "$( \"#effect\" ).toggle(function() {";
+print "runEffect();";
+print "});";
+print "$( \"#effect\" ).hide();";
+print "});";
+print "</script>"
 print "</head>"
 
-print "<body>"
-print "<h1>Environment Configuration</h1>"
+print "<body id=\"bodyLogin\">"
+print "<table border=\"0\" id=\"creationTable\">"
+print "<tr><td><img src=\"../panel/images/logocreation.png\" width=\"50%\"></td></tr>"
 
-if venvPath == "" or pyPath == "":
-    # environment form
-    print "<form method=\"GET\">"
-    print "<input type=\"text\" name=\"venvwine\" placeholder=\"virtual wine environment path\" size=\"30px\" value=\"" + venvPath + "\"><br />"
-    print "<input type=\"text\" name=\"pyinstaller\" placeholder=\"pyinstaller.py path\" size=\"30px\" value =\"" + pyPath + "\"><br />"
-    print "<p><input type=\"submit\">"
-    print "</form>"
-else:
-    print "Environment parameters saved.<br />"
+saved = 0
+if venvPath != "" and pyPath != "":
     # write config file
     file = open("config", "w")
     file.write(venvPath + "," + pyPath)
     file.close()
-    print "<a href=\"index.html\">Menu</a>"
+    saved = 1
 
+if venvPath == "":
+    venvPath = savedVenv
+if pyPath == "":
+    pyPath = savedPyPath
+
+# environment form
+print "<tr><td>"
+print "<table border=\"0\" width=\"350px\" style=\"background: #d3d3d3; border-radius: 5px;\">"
+print "<tr><td colspan=\"2\" height=\"30px\">"
+if saved == 1:
+    print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">Environment parameters saved.</div>"
+    print "<script>setTimeout(function(){window.location.href='configuration.html';}, 5000);</script>"
+else:
+    print "<div align=\"center\" style=\"font-family:  Arial, sans-serif; color: #a3a3a3; font-size: 14px;\">Environment Configuration</div>"
+print "</td></tr>"
+print "<tr><td colspan=\"2\"><form method=\"GET\">"
+print "<input style=\"display: block; width: 90%;\" id=\"input\" type=\"text\" title=\"The full path where you installed your virtual wine environment.\" name=\"venvwine\" placeholder=\"virtual wine environment path\" value=\"" + venvPath + "\"></td></tr>"
+print "<tr><td colspan=\"2\"><input style=\"display: block; width: 90%;\" id=\"input\" title=\"The full path where your pyinstaller.py script is located.\" type=\"text\" name=\"pyinstaller\" placeholder=\"pyinstaller.py path\" size=\"30px\" value =\"" + pyPath + "\"></td></tr>"
+print "<tr><td><input style=\"display: block; width: 100%;\" id=\"loginButton\" onclick=\"window.location.href='index.html'\" type=\"button\" value=\"Back\"></td><td><input style=\"display: block; width: 100%;\" id=\"loginButton\" type=\"submit\" value=\"Save\"></td></tr>"
+print "</form>"
+print "<table>"
+print "</td></tr>"
+
+print "</table>"
 print "</body>"
-
 print "</html>"

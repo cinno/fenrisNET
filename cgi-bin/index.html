@@ -30,14 +30,37 @@ print "<html>"
 # header
 print "<head>"
 print "<title>fenrisNET (bot creation interface)</title>"
+print "<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css\">";
+print "<link rel=\"stylesheet\" type=\"text/css\" href=\"../panel/style.css\">";
+print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
+print "<script src=\"//code.jquery.com/ui/1.11.3/jquery-ui.js\"></script>";
+print "<script>"
+print "$(function() {"
+print "$( \"#menu\" ).menu();"
+print "$( document ).tooltip({"
+print "track: true"
+print "});"
+print "});"
+print "</script>"
+print "<style>"
+print ".ui-menu { width: 350px; background: #d3d3d3; border-radius: 5px;}"
+print "</style>"
 print "</head>"
 
-print "<body>"
-print "<h1>Bot Creation Interface</h1>"
+print "<body id=\"bodyLogin\">"
+print "<table border=\"0\" id=\"creationTable\">"
+print "<tr><td height=\"20%\"><img src=\"../panel/images/logocreation.png\" width=\"50%\"></td></tr>"
 
-print "<a href=\"configuration.html\">Environment Configuration</a><br />"
-print "<a href=\"creation.html\">Create a Bot</a>"
+print "<tr>"
+print "<td width=\"25%\" style=\"vertical-align: top;\">"
+print "<ul id=\"menu\">"
+print "<li onclick=\"window.location.href='configuration.html'\"><div style=\"font-family:  Arial, sans-serif;\" title=\"Click here to set your compiling environment.\">Environment Configuration</div></li>"
+print "<li onclick=\"window.location.href='creation.html'\"><div style=\"font-family:  Arial, sans-serif;\" title=\"Click here to create a bot based on your compiling environment.\">Create a Bot</div></li>"
+print "</ul>"
+print "</td>"
+print "</tr>"
 
+print "</table>"
 print "</body>"
 
 print "</html>"
