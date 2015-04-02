@@ -130,7 +130,6 @@ elseif(hash("sha512", $_GET['p']) == $curPw) {
 	print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
 	print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
 	print "<script src=\"//code.jquery.com/ui/1.11.3/jquery-ui.js\"></script>";
-	print "<link rel=\"stylesheet\" href=\"/resources/demos/style.css\">";
 	print "<script>";
 	print "$(function() {";
 	print "$( document ).tooltip({";
@@ -300,7 +299,6 @@ else {
         print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
         print "<script src=\"//code.jquery.com/jquery-1.10.2.js\"></script>";
         print "<script src=\"//code.jquery.com/ui/1.11.3/jquery-ui.js\"></script>";
-        print "<link rel=\"stylesheet\" href=\"/resources/demos/style.css\">";
 	print "<style>";
 	print "#effect { font-family: Arial, sans-serif; font-size: 14px; width: 95%; padding: 0.4em; text-align: center; background: #aa0000; opacity: 0.75; border: 0px; color: #ffffff;}";
 	print "</style>";
