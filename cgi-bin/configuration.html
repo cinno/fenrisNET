@@ -112,7 +112,7 @@ if saved == 1:
     print "<div id=\"effect\" class=\"ui-widget-content ui-corner-all\">Environment parameters saved.</div>"
     print "<script>setTimeout(function(){window.location.href='configuration.html';}, 5000);</script>"
 else:
-    print "<div align=\"center\" style=\"font-family:  Arial, sans-serif; color: #a3a3a3; font-size: 14px;\">Environment Configuration</div>"
+    print "<div align=\"center\" id=\"fontDiv\" style=\"color: #a3a3a3;\">Environment Configuration</div>"
 print "</td></tr>"
 print "<tr><td colspan=\"2\"><form method=\"GET\">"
 print "<input style=\"display: block; width: 90%;\" id=\"input\" type=\"text\" title=\"The full path where you installed your virtual wine environment.\" name=\"venvwine\" placeholder=\"virtual wine environment path\" value=\"" + venvPath + "\"></td></tr>"
