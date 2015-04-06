@@ -1,5 +1,7 @@
 <h1>fenrisNET</h1>
-<i>Version 1.4.7</i>
+<i>Version 1.5.9</i>
+<hr>
+Release: CuddlingPuppy
 <hr>
 <h2>About:</h2>
 This program is a simple <b>proof of concept (POC)</b> of how someone can easily implement a simple botnet with a <b>DDoS</b> feature. The botnet is implemented in the context of a research question and is for <b>EDUCATIONAL PURPOSE ONLY</b>. So the author does not take responsibility for any misuse and abuse. Thatswhy: Just test and use this software on systems you own or where you have the permission to execute these kind of software. 
@@ -23,12 +25,14 @@ At first the botmaster creates a bot-executable for windows using the run.py scr
 <ul>
 <li>Before you first run the program you should execute the setup script (python setup.py -h)</li>
 <li>If anything fails have a look at INSTALL.</li>
+<li>If you want to use the web interface for bot creation, do not remove the panel/ directory when copying the command and control web interface to your public web server.</li>
 </ul>
 <hr>
 <h2>Usage Examples:</h2>
 <ul>
 <li>Create a new Windows executable (bot): ./run.py -cf (to install the bot you need to execute the .bat file)</li>
-<li>Access the webinterface: Copy all files and folders from panel/ to your webservers www folder and access the panel by calling http://YOURWEBSERVER/orders.php</li>
+<li>Create a new Windows executable (bot) with the web interface: ./run.py -bci (access 127.0.0.1:8000/cgi-bin/index.html with your browser)</li>
+<li>Access the c&c webinterface: Copy all files and folders from panel/ to your webservers www folder and access the panel by calling http://YOURWEBSERVER/orders.php</li>
 </ul>
 HINT: The standard password for the web interface is "password".
 <hr>
