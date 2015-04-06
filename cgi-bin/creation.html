@@ -27,19 +27,19 @@ import subprocess
 
 arguments = cgi.FieldStorage()
 try:
-    execname = arguments["execname"].value
+    execname = cgi.escape(arguments["execname"].value)
 except:
     execname = ""
 try:
-    candc = arguments["candc"].value
+    candc = cgi.escape(arguments["candc"].value)
 except:
     candc = ""
 try:
-    encryption = arguments["encryption"].value
+    encryption = cgi.escape(arguments["encryption"].value)
 except:
     encryption = ""
 try:
-    key = arguments["key"].value
+    key = cgi.escape(arguments["key"].value)
 except:
     key = ""
 
@@ -105,7 +105,7 @@ print "});";
 print "function submitForm() {"
 print "document.getElementById(\"createForm\").elements[6].disabled = true;"
 print "document.getElementById(\"createForm\").elements[6].value = 'Creating...';"
-print "document.getElementById(\"createForm\").elements[6].style = \"background: #dfe9ec; display: block; width: 100%;\""
+print "document.getElementById(\"createForm\").elements[6].style = \"background: #cccccc; display: block; width: 100%;\""
 print "document.getElementById(\"createForm\").submit();"
 print "}"
 print "</script>"
