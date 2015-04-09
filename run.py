@@ -152,3 +152,6 @@ else:
 			# wrong input
 			if setupParameter != "p" and setupParameter != "e" and setupParameter != "c":
 				print myTool.fail + "[-]" + myTool.stop + "Wrong input! (choose one of: p, e, c)"
+	
+	if "-s" not in sys.argv and "--setup" not in sys.argv and "-cf" not in sys.argv and "--create-fenris" not in sys.argv and "-a" not in sys.argv and "-h" not in sys.argv and "--help" not in sys.argv and "-bci" not in sys.argv and "--bot-creation-interface" not in sys.argv:
+		print myTool.fail + "[-]" + myTool.stop + " Invalid option! Use -h to get some nasty help."
